@@ -294,10 +294,10 @@ const HOURS = { key: "hours", label: "Öppettider", type: "hours",
 
 const SECTIONS = [
   { group: "Hem och kundklubb" },
-  { key: "campaigns", title: "Kampanjer", noun: "kampanj", type: "list",
-    intro: "Visas under \"Just nu\" på Hem, i den här ordningen. En kampanj ligger kvar i appen tills den tas bort, även efter slutdatum.",
+  { key: "campaigns", title: "Just nu", noun: "kampanj", type: "list",
+    intro: "Kampanjer som visas under \"Just nu\" på Hem, i den här ordningen. En kampanj döljs automatiskt dagen efter slutdatum.",
     summary: c => ({ title: c.title, sub: c.validUntil ? "Gäller t.o.m. " + prettyDate(c.validUntil) : (c.text || ""), img: c.imageURL,
-      badges: isPast(c.validUntil) ? [["warn", "Har gått ut"]] : [] }),
+      badges: isPast(c.validUntil) ? [["muted", "Har gått ut – dold"]] : [] }),
     fields: [
       { key: "title", label: "Rubrik", type: "text", required: true, full: true },
       { key: "text", label: "Text", type: "textarea", full: true },
@@ -320,9 +320,9 @@ const SECTIONS = [
       { key: "id", type: "id" }
     ] },
   { key: "offers", title: "Erbjudanden", noun: "erbjudande", type: "list",
-    intro: "Visas i Kundklubben. Rabattkoden visas så att kunden kan visa den i butiken.",
+    intro: "Visas i Kundklubben. Rabattkoden visas så att kunden kan visa den i butiken. Ett erbjudande döljs automatiskt dagen efter slutdatum.",
     summary: o => ({ title: o.title, sub: [o.code && "Kod: " + o.code, o.validUntil && "t.o.m. " + prettyDate(o.validUntil)].filter(Boolean).join(" · "),
-      badges: [...(o.membersOnly ? [["ok", "Medlem"]] : []), ...(isPast(o.validUntil) ? [["warn", "Har gått ut"]] : [])] }),
+      badges: [...(o.membersOnly ? [["ok", "Medlem"]] : []), ...(isPast(o.validUntil) ? [["muted", "Har gått ut – dold"]] : [])] }),
     fields: [
       { key: "title", label: "Rubrik", type: "text", required: true, full: true },
       { key: "text", label: "Text", type: "textarea", full: true },
@@ -409,7 +409,7 @@ const SECTIONS = [
       { key: "items", label: "Punkter", type: "checklist", required: true, full: true },
       { key: "id", type: "id" }
     ] },
-  { key: "campsites", title: "Ställplatser", noun: "ställplats", type: "list",
+  { key: "campsites", title: "Ställplatstips", noun: "ställplats", type: "list",
     intro: "Visas på kartan och i listan med väderprognos.",
     titleKey: "name",
     summary: c => ({ title: c.name, sub: c.region || "" }),
@@ -672,7 +672,7 @@ function validateFields(sec, path, obj, fields, add) {
     if (f.type === "email" && !validEmail(str)) add(sec, p, "err", "Ser inte ut som en e-postadress.");
     if (f.type === "date" && !isDate(str)) add(sec, p, "err", "Välj ett datum.");
     if (f.type === "int" && !Number.isInteger(v)) add(sec, p, "err", "Ange ett heltal.");
-    if (f.key === "validUntil" && isPast(str)) add(sec, p, "warn", "Datumet har passerat. Ta bort posten om den inte ska synas längre.");
+    if (f.key === "validUntil" && isPast(str)) add(sec, p, "warn", "Datumet har passerat, så posten visas inte i appen. Du kan ta bort den.");
   }
 }
 
