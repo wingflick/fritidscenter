@@ -437,6 +437,14 @@
       "longitude": 12.5,
       "description": "Exempelplats. Byt mot riktig plats.",
       "id": "falkenberg-exempel"
+    },
+    {
+      "name": "Degerfors",
+      "region": "Värmland",
+      "latitude": 59.2519704315137,
+      "longitude": 14.45844654326496,
+      "description": "Fantastiskt",
+      "id": "degerfors"
     }
   ],
   "workshopOrders": [
