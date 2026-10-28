@@ -1,0 +1,1317 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Fritidscenter – innehåll</title>
+<style>
+:root {
+  --brand: #CB3312;
+  --brand-ink: #fff;
+  --ink: #1C1C1C;
+  --ink-2: #5A5652;
+  --surface: #fff;
+  --canvas: #F6F4F2;
+  --line: #E4E0DC;
+  --ok: #2F7D4F;
+  --warn: #9A5B00;
+  --warn-bg: #FFF4E0;
+  --err: #B3261E;
+  --err-bg: #FDECEA;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #F2F0EE; --ink-2: #B5B0AB; --surface: #1E1D1C; --canvas: #121212; --line: #34312F;
+    --ok: #5FBF84; --warn: #F0B45A; --warn-bg: #3A2C14; --err: #F2867E; --err-bg: #3B1C1A;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--canvas); color: var(--ink); font: 15px/1.45 var(--font); }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--brand); }
+
+/* Topp */
+header.top {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top));
+  background: var(--brand); color: var(--brand-ink);
+}
+.wordmark { font-weight: 700; font-size: 18px; letter-spacing: -.01em; white-space: nowrap; }
+.wordmark span { opacity: .75; }
+.wordmark small { font-weight: 500; opacity: .8; font-size: 14px; margin-left: 6px; }
+.top .status { font-size: 13px; opacity: .9; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top .actions { display: flex; gap: 8px; }
+.btn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 500; white-space: nowrap;
+}
+.btn:hover { filter: brightness(.97); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.top .btn { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: #fff; }
+.top .btn.primary { background: #fff; color: var(--brand); border-color: #fff; }
+.btn.small { padding: 5px 10px; font-size: 13px; border-radius: 8px; }
+.btn.ghost { background: transparent; }
+.btn.danger { color: var(--err); }
+.iconbtn { border: 0; background: transparent; cursor: pointer; padding: 6px 8px; border-radius: 8px; color: var(--ink-2); font-size: 15px; line-height: 1; }
+.iconbtn:hover { background: var(--canvas); color: var(--ink); }
+.iconbtn:disabled { opacity: .3; cursor: default; background: transparent; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); max-width: 1180px; margin: 0 auto; }
+nav.sections { position: sticky; top: 56px; align-self: start; padding: 20px 12px; max-height: calc(100vh - 56px); overflow: auto; }
+nav.sections .group { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 16px 10px 6px; }
+nav.sections button {
+  display: flex; width: 100%; align-items: center; gap: 8px; text-align: left;
+  border: 0; background: transparent; padding: 8px 10px; border-radius: 9px; cursor: pointer; color: var(--ink);
+}
+nav.sections button:hover { background: var(--surface); }
+nav.sections button.active { background: var(--surface); font-weight: 600; box-shadow: inset 3px 0 0 var(--brand); }
+nav.sections .count { margin-left: auto; font-size: 12px; color: var(--ink-2); }
+.dot { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; font-size: 11px; font-weight: 700; display: inline-grid; place-items: center; }
+.dot.err { background: var(--err); color: #fff; }
+.dot.changed { background: transparent; color: var(--brand); font-size: 18px; padding: 0; min-width: 8px; }
+main { padding: 20px 20px 80px; min-width: 0; }
+
+@media (max-width: 760px) {
+  .layout { display: block; }
+  nav.sections {
+    position: sticky; top: 52px; z-index: 10; max-height: none; display: flex; gap: 6px; overflow-x: auto;
+    padding: 10px 12px; background: var(--canvas); border-bottom: 1px solid var(--line);
+  }
+  nav.sections .group { display: none; }
+  nav.sections button { width: auto; white-space: nowrap; background: var(--surface); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; }
+  nav.sections button.active { box-shadow: none; border-color: var(--brand); color: var(--brand); }
+  main { padding: 16px 16px 80px; }
+  .top .status { display: none; }
+  .wordmark small { display: none; }
+  .top .long { display: none; }
+  header.top { gap: 8px; }
+  .wordmark { flex: 1; }
+}
+
+/* Sektion */
+.section-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.section-head h1 { margin: 0; font-size: 26px; letter-spacing: -.01em; }
+.section-head p { margin: 4px 0 0; color: var(--ink-2); max-width: 62ch; }
+.section-head .grow { flex: 1; min-width: 240px; }
+.banner { border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--surface); }
+.banner.warn { background: var(--warn-bg); border-color: transparent; color: var(--ink); }
+.banner.err { background: var(--err-bg); border-color: transparent; }
+.banner b { display: block; margin-bottom: 2px; }
+.banner .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+/* Kort */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 10px; }
+.card > summary, .card > .card-head {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px 10px 12px 14px;
+}
+.card > summary::-webkit-details-marker { display: none; }
+.card > summary .chev { transition: transform .15s; color: var(--ink-2); font-size: 12px; width: 12px; }
+.card[open] > summary .chev { transform: rotate(90deg); }
+.card .title { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card .sub { color: var(--ink-2); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.card .meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.card .tools { display: flex; gap: 2px; margin-left: auto; flex-shrink: 0; }
+.card .body { padding: 4px 14px 14px; border-top: 1px solid var(--line); }
+.card.plain { padding: 4px 14px 14px; }
+.card.nested { background: var(--canvas); border-style: solid; }
+.card.nested .card { background: var(--surface); }
+.thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--line); flex-shrink: 0; }
+.badge { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge.err { background: var(--err-bg); color: var(--err); }
+.badge.ok { background: color-mix(in srgb, var(--ok) 15%, transparent); color: var(--ok); }
+.badge.muted { background: var(--canvas); color: var(--ink-2); }
+
+/* Fält */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+.grid > .full { grid-column: 1 / -1; }
+@media (max-width: 600px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.field { margin-top: 12px; min-width: 0; }
+.field > label, .field > .label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.field .req { color: var(--brand); }
+.field input[type=text], .field input[type=url], .field input[type=email], .field input[type=tel],
+.field input[type=number], .field input[type=date], .field select, .field textarea {
+  width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 9px 11px;
+}
+.field textarea { min-height: 84px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid color-mix(in srgb, var(--brand) 50%, transparent); outline-offset: 0; border-color: var(--brand); }
+.field .hint { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; }
+.field .msg { font-size: 12.5px; margin-top: 4px; display: none; }
+.field.has-err .msg { display: block; color: var(--err); }
+.field.has-warn .msg { display: block; color: var(--warn); }
+.field.has-err input, .field.has-err textarea, .field.has-err select { border-color: var(--err); }
+.check { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-weight: 500; }
+.check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--brand); }
+.inline-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.inline-row input { flex: 1; min-width: 0; }
+.inline-row .narrow { flex: 0 0 38%; }
+.imgprev { margin-top: 8px; max-width: 260px; max-height: 150px; border-radius: 9px; display: block; object-fit: cover; border: 1px solid var(--line); }
+.latlon { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center; }
+.add { margin-top: 4px; }
+.idline { font-size: 12px; color: var(--ink-2); margin-top: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.idline input { border: 1px solid var(--line); background: var(--canvas); border-radius: 7px; padding: 3px 7px; font: 12px ui-monospace, Menlo, monospace; min-width: 180px; }
+.empty { text-align: center; color: var(--ink-2); padding: 28px; border: 1px dashed var(--line); border-radius: var(--radius); margin-bottom: 10px; }
+
+/* Dialog */
+dialog { border: 0; border-radius: 16px; padding: 0; width: min(560px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog .d-body { padding: 20px 22px; max-height: 70vh; overflow: auto; }
+dialog h2 { margin: 0 0 8px; font-size: 20px; }
+dialog .d-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 22px 18px; flex-wrap: wrap; }
+dialog ol { padding-left: 20px; margin: 8px 0; }
+dialog ol li { margin-bottom: 6px; }
+code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); padding: 1px 5px; border-radius: 5px; }
+.changes { margin: 8px 0 0; padding-left: 18px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0;
+  background: var(--ink); color: var(--canvas); padding: 10px 16px; border-radius: 10px; z-index: 50;
+  transition: .2s; pointer-events: none; max-width: calc(100vw - 32px);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.loading { padding: 60px 20px; text-align: center; color: var(--ink-2); }
+.menu { position: relative; }
+.menu-list { position: absolute; right: 0; top: calc(100% + 6px); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18); padding: 6px; min-width: 220px; display: none; z-index: 30; }
+.menu-list.open { display: block; }
+.menu-list button { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 9px 12px; border-radius: 8px; cursor: pointer; }
+.menu-list button:hover { background: var(--canvas); }
+.menu-list hr { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wordmark">Fritids<span>center</span><small>Innehåll i appen</small></div>
+  <div class="status" id="status">Läser in…</div>
+  <div class="actions">
+    <button class="btn primary" id="publishBtn" disabled>Publicera</button>
+    <div class="menu">
+      <button class="btn" id="menuBtn" aria-haspopup="true" aria-label="Mer">⋯</button>
+      <div class="menu-list" id="menuList">
+        <button data-act="login">Logga in med GitHub-nyckel…</button>
+        <button data-act="reload">Läs in senaste versionen</button>
+        <button data-act="discard">Släng mina ändringar</button>
+        <hr>
+        <button data-act="download">Ladda ner content.json</button>
+        <button data-act="upload">Öppna en content.json från datorn…</button>
+        <hr>
+        <button data-act="logout">Logga ut</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sections" id="nav" aria-label="Delar"></nav>
+  <main id="main"><div class="loading">Läser in innehållet…</div></main>
+</div>
+
+<input type="file" id="fileInput" accept="application/json,.json" hidden>
+
+<dialog id="loginDialog">
+  <form method="dialog">
+    <div class="d-body">
+      <h2>Logga in för att publicera</h2>
+      <p>Editorn sparar direkt i GitHub-repot med en personlig nyckel. Nyckeln sparas bara i den här webbläsaren.</p>
+      <ol>
+        <li>Gå till <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>.</li>
+        <li>Ge den ett namn, t.ex. <i>Fritidscenter-editor</i>, och välj en giltighetstid.</li>
+        <li><b>Resource owner:</b> <span class="repoOwner">ägaren av repot</span>. <b>Repository access:</b> <i>Only select repositories</i> → <span class="repoName">repot</span>.</li>
+        <li><b>Permissions → Repository → Contents:</b> <i>Read and write</i>. Inget annat behövs.</li>
+        <li>Klicka <i>Generate token</i> och klistra in den här.</li>
+      </ol>
+      <div class="field">
+        <label for="tokenInput">GitHub-nyckel</label>
+        <input type="text" id="tokenInput" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+        <div class="msg" id="tokenMsg"></div>
+      </div>
+      <details style="margin-top:12px">
+        <summary style="cursor:pointer;color:var(--ink-2);font-size:13px">Repo-inställningar</summary>
+        <div class="grid">
+          <div class="field"><label for="cfgOwner">Ägare</label><input type="text" id="cfgOwner"></div>
+          <div class="field"><label for="cfgRepo">Repo</label><input type="text" id="cfgRepo"></div>
+          <div class="field"><label for="cfgPath">Fil</label><input type="text" id="cfgPath"></div>
+          <div class="field"><label for="cfgBranch">Gren (tomt = standard)</label><input type="text" id="cfgBranch"></div>
+        </div>
+      </details>
+    </div>
+    <div class="d-foot">
+      <button class="btn" type="button" onclick="this.closest('dialog').close('cancel')">Avbryt</button>
+      <button class="btn primary" id="tokenSave" value="ok">Logga in</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="publishDialog">
+  <form method="dialog">
+    <div class="d-body">
+      <h2>Publicera ändringar</h2>
+      <div id="publishSummary"></div>
+      <div class="field">
+        <label for="commitMsg">Beskrivning (syns i historiken på GitHub)</label>
+        <input type="text" id="commitMsg">
+      </div>
+      <p class="hint" style="color:var(--ink-2);font-size:13px;margin-bottom:0">Det tar 1–2 minuter innan filen är ute. Appen hämtar nytt innehåll när den öppnas (högst var 30:e minut) eller direkt när man drar ner på Hem.</p>
+    </div>
+    <div class="d-foot">
+      <button class="btn" type="button" onclick="this.closest('dialog').close('cancel')">Avbryt</button>
+      <button class="btn primary" id="publishConfirm" value="ok">Publicera</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------ *
+ * Schema. Speglar Models/AppContent.swift i appen.                   *
+ * Ändras modellen i appen ska den ändras här också.                  *
+ * ------------------------------------------------------------------ */
+
+const SF_ICONS = [
+  ["wrench.adjustable", "Skiftnyckel"], ["wrench.and.screwdriver", "Verktyg"], ["hammer", "Hammare"],
+  ["drop", "Droppe (fukt)"], ["flame", "Låga (gasol)"], ["shippingbox", "Paket (tillbehör)"],
+  ["doc.text", "Dokument"], ["checklist", "Checklista"], ["snowflake", "Snöflinga"],
+  ["sun.max", "Sol"], ["bolt", "Blixt (el)"], ["battery.100", "Batteri"], ["car", "Bil"],
+  ["bus", "Buss"], ["tent", "Tält"], ["map", "Karta"], ["calendar", "Kalender"],
+  ["tag", "Prislapp"], ["gift", "Present"], ["star", "Stjärna"], ["shield", "Sköld (försäkring)"],
+  ["paintbrush", "Pensel"], ["tirepressure", "Däcktryck"], ["fuelpump", "Bränsle"],
+  ["thermometer", "Termometer"], ["sparkles", "Gnistor"], ["info.circle", "Info"]
+];
+const STEPS = ["Inlämnad", "Felsökning", "Väntar på delar", "Arbete pågår", "Klar för hämtning"];
+
+const HOURS = { key: "hours", label: "Öppettider", type: "hours",
+  hint: "Dagar som \"Mån–tors\", \"Fre\" eller \"Lör\", tid som \"10–18\". Appen räknar ut \"Öppet nu\" från detta." };
+
+const SECTIONS = [
+  { group: "Hem och kundklubb" },
+  { key: "campaigns", title: "Kampanjer", noun: "kampanj", type: "list",
+    intro: "Visas under \"Just nu\" på Hem, i den här ordningen. En kampanj ligger kvar i appen tills den tas bort, även efter slutdatum.",
+    summary: c => ({ title: c.title, sub: c.validUntil ? "Gäller t.o.m. " + prettyDate(c.validUntil) : (c.text || ""), img: c.imageURL,
+      badges: isPast(c.validUntil) ? [["warn", "Har gått ut"]] : [] }),
+    fields: [
+      { key: "title", label: "Rubrik", type: "text", required: true, full: true },
+      { key: "text", label: "Text", type: "textarea", full: true },
+      { key: "imageURL", label: "Bild (adress)", type: "image", full: true, hint: "Lämna tomt för ett kort utan bild." },
+      { key: "linkURL", label: "Länk", type: "url" },
+      { key: "linkTitle", label: "Länktext", type: "text", placeholder: "Läs mer" },
+      { key: "validUntil", label: "Gäller t.o.m.", type: "date" },
+      { key: "id", type: "id" }
+    ] },
+  { key: "events", title: "Event", noun: "event", type: "list", sortable: "date",
+    intro: "Nästa kommande event visas på Hem. Alla visas i Kundklubben. Passerade event döljs automatiskt.",
+    summary: e => ({ title: e.title, sub: [prettyDate(e.date), e.location].filter(Boolean).join(" · "),
+      badges: isPast(e.date) ? [["muted", "Passerat"]] : [] }),
+    fields: [
+      { key: "title", label: "Rubrik", type: "text", required: true, full: true },
+      { key: "date", label: "Datum", type: "date", required: true },
+      { key: "location", label: "Plats", type: "text", placeholder: "Trollhättan" },
+      { key: "text", label: "Text", type: "textarea", full: true },
+      { key: "url", label: "Länk", type: "url", full: true },
+      { key: "id", type: "id" }
+    ] },
+  { key: "offers", title: "Erbjudanden", noun: "erbjudande", type: "list",
+    intro: "Visas i Kundklubben. Rabattkoden visas så att kunden kan visa den i butiken.",
+    summary: o => ({ title: o.title, sub: [o.code && "Kod: " + o.code, o.validUntil && "t.o.m. " + prettyDate(o.validUntil)].filter(Boolean).join(" · "),
+      badges: [...(o.membersOnly ? [["ok", "Medlem"]] : []), ...(isPast(o.validUntil) ? [["warn", "Har gått ut"]] : [])] }),
+    fields: [
+      { key: "title", label: "Rubrik", type: "text", required: true, full: true },
+      { key: "text", label: "Text", type: "textarea", full: true },
+      { key: "code", label: "Rabattkod", type: "text" },
+      { key: "validUntil", label: "Gäller t.o.m.", type: "date" },
+      { key: "membersOnly", label: "Bara för medlemmar", type: "bool", default: false, full: true },
+      { key: "id", type: "id" }
+    ] },
+  { key: "club", title: "Kundklubben", type: "object",
+    intro: "Texten överst på sidan Kundklubb och event.",
+    fields: [
+      { key: "name", label: "Namn", type: "text", placeholder: "Kundklubben" },
+      { key: "signupURL", label: "Länk för att bli medlem", type: "url", hint: "Visar knappen \"Bli medlem\"." },
+      { key: "intro", label: "Introduktion", type: "textarea", full: true },
+      { key: "benefits", label: "Förmåner", type: "strings", full: true, addLabel: "Lägg till förmån" }
+    ] },
+
+  { group: "Anläggningar och tjänster" },
+  { key: "facilities", title: "Anläggningar", noun: "anläggning", type: "list",
+    intro: "Kontakta oss, anläggningssidorna och vart bokningar och frågor till verkstaden skickas.",
+    summary: f => ({ title: f.name, sub: f.address || "", img: f.imageURL, badges: [] }),
+    idWarning: "Används för pushnotiser per anläggning. Ändra inte efter att appen släppts.",
+    titleKey: "name",
+    fields: [
+      { key: "name", label: "Namn", type: "text", required: true },
+      { key: "address", label: "Adress", type: "text" },
+      { key: "phone", label: "Telefon", type: "tel" },
+      { key: "email", label: "E-post", type: "email", hint: "Hit skickas bokningsförfrågningar." },
+      { key: "workshopEmail", label: "E-post till verkstaden", type: "email", hint: "För \"Fråga verkstaden\". Tomt = samma som ovan." },
+      { key: "pageURL", label: "Sida på hemsidan", type: "url" },
+      { key: "latitude", label: "Plats på kartan", type: "latlon", full: true },
+      Object.assign({}, HOURS, { full: true }),
+      { key: "imageURL", label: "Bild (adress)", type: "image", full: true },
+      { key: "intro", label: "Presentation", type: "textarea", full: true },
+      { key: "note", label: "Notering", type: "textarea", full: true, hint: "Kort text på kortet i listan, t.ex. stängt en viss dag." },
+      { key: "offers", label: "Utbud", type: "strings", full: true, addLabel: "Lägg till", hint: "Visas på kortet i listan, t.ex. \"Husbilar\", \"Verkstad\"." },
+      { key: "departments", label: "Avdelningar", type: "list", full: true, noun: "avdelning",
+        summary: d => ({ title: d.name, sub: [d.phone, d.email].filter(Boolean).join(" · ") }),
+        fields: [
+          { key: "name", label: "Namn", type: "text", required: true, full: true },
+          { key: "phone", label: "Telefon", type: "tel" },
+          { key: "phoneHours", label: "Telefontid", type: "text", placeholder: "08.30–11.30" },
+          { key: "email", label: "E-post", type: "email", full: true },
+          Object.assign({}, HOURS, { full: true }),
+          { key: "note", label: "Notering", type: "textarea", full: true }
+        ] },
+      { key: "sections", label: "Textavsnitt med bild", type: "list", full: true, noun: "avsnitt",
+        summary: s => ({ title: s.title, sub: s.text || "", img: s.imageURL }),
+        fields: [
+          { key: "title", label: "Rubrik", type: "text", required: true, full: true },
+          { key: "text", label: "Text", type: "textarea", required: true, full: true },
+          { key: "imageURL", label: "Bild (adress)", type: "image", full: true }
+        ] },
+      { key: "id", type: "id" }
+    ] },
+  { key: "services", title: "Tjänster", noun: "tjänst", type: "list",
+    intro: "Sidan Våra tjänster och valen i Boka tid.",
+    summary: s => ({ title: s.title, sub: s.summary || "", badges: s.bookable === false ? [["muted", "Kan inte bokas"]] : [] }),
+    fields: [
+      { key: "title", label: "Namn", type: "text", required: true },
+      { key: "icon", label: "Ikon", type: "icon", default: "wrench.adjustable" },
+      { key: "summary", label: "Kort beskrivning", type: "text", full: true },
+      { key: "details", label: "Mer information", type: "textarea", full: true },
+      { key: "bookable", label: "Kan väljas i Boka tid", type: "bool", default: true, full: true },
+      { key: "id", type: "id" }
+    ] },
+  { key: "contact", title: "Kontaktuppgifter", type: "object",
+    intro: "Gemensamma uppgifter som används när en anläggning saknar egna.",
+    fields: [
+      { key: "phone", label: "Telefon", type: "tel" },
+      { key: "website", label: "Hemsida", type: "url" },
+      { key: "bookingEmail", label: "E-post för bokningar", type: "email" },
+      { key: "workshopEmail", label: "E-post till verkstaden", type: "email" }
+    ] },
+
+  { group: "Tips" },
+  { key: "guides", title: "Guider och checklistor", noun: "guide", type: "list",
+    intro: "Checklistor i appen. Hjälpcentrets artiklar hämtas separat.",
+    summary: g => ({ title: g.title, sub: (g.items || []).length + " punkter" }),
+    fields: [
+      { key: "title", label: "Rubrik", type: "text", required: true },
+      { key: "icon", label: "Ikon", type: "icon", default: "checklist" },
+      { key: "summary", label: "Kort beskrivning", type: "text", full: true },
+      { key: "items", label: "Punkter", type: "checklist", required: true, full: true },
+      { key: "id", type: "id" }
+    ] },
+  { key: "campsites", title: "Ställplatser", noun: "ställplats", type: "list",
+    intro: "Visas på kartan och i listan med väderprognos.",
+    titleKey: "name",
+    summary: c => ({ title: c.name, sub: c.region || "" }),
+    fields: [
+      { key: "name", label: "Namn", type: "text", required: true },
+      { key: "region", label: "Område", type: "text", placeholder: "Trollhättan" },
+      { key: "latitude", label: "Plats på kartan", type: "latlon", required: true, full: true },
+      { key: "description", label: "Beskrivning", type: "textarea", full: true },
+      { key: "url", label: "Länk", type: "url", full: true },
+      { key: "id", type: "id" }
+    ] },
+
+  { group: "Övrigt" },
+  { key: "vehiclesForSale", title: "Fordon (reserv)", noun: "fordon", type: "list",
+    intro: "Används bara om fordonsflödet från hemsidan är avstängt i appen. Normalt hämtas fordonen automatiskt.",
+    summary: v => ({ title: v.title, sub: [v.year, v.price != null && fmtNum(v.price) + " kr", v.location].filter(Boolean).join(" · "), img: v.imageURL }),
+    fields: [
+      { key: "title", label: "Rubrik", type: "text", required: true, full: true },
+      { key: "category", label: "Typ", type: "select", options: [["", "–"], ["husbil", "Husbil"], ["husvagn", "Husvagn"]] },
+      { key: "condition", label: "Skick", type: "select", options: [["", "–"], ["ny", "Ny"], ["begagnad", "Begagnad"]] },
+      { key: "year", label: "Årsmodell", type: "int" },
+      { key: "price", label: "Pris (kr)", type: "int" },
+      { key: "mileage", label: "Miltal (mil)", type: "int" },
+      { key: "beds", label: "Bäddar", type: "int" },
+      { key: "location", label: "Anläggning", type: "text" },
+      { key: "url", label: "Länk", type: "url" },
+      { key: "imageURL", label: "Bild (adress)", type: "image", full: true },
+      { key: "id", type: "id" }
+    ] },
+  { key: "workshopOrders", title: "Verkstadsstatus (demo)", noun: "order", type: "list", idKey: "orderNumber",
+    intro: "Exempelordrar för Status på verkstaden, t.ex. DEMO123 för att visa funktionen.",
+    summary: o => ({ title: o.orderNumber, sub: [o.registration, STEPS[o.step]].filter(Boolean).join(" · ") }),
+    fields: [
+      { key: "orderNumber", label: "Ordernummer", type: "text", required: true, unique: true },
+      { key: "registration", label: "Registreringsnummer", type: "text" },
+      { key: "step", label: "Steg", type: "select", required: true, number: true, options: STEPS.map((s, i) => [String(i), s]) },
+      { key: "updated", label: "Uppdaterad", type: "date" },
+      { key: "message", label: "Meddelande", type: "textarea", full: true }
+    ] }
+];
+const SECTION_LIST = SECTIONS.filter(s => s.key);
+const TOP_ORDER = ["updated", "contact", "campaigns", "services", "facilities", "vehiclesForSale", "offers", "events", "club", "guides", "campsites", "workshopOrders"];
+
+/* ------------------------------------------------------------------ *
+ * Hjälpfunktioner                                                    *
+ * ------------------------------------------------------------------ */
+
+const $ = s => document.querySelector(s);
+const el = (tag, attrs = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") n.className = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else if (k === "text") n.textContent = v;
+    else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null && k !== false) n.append(k.nodeType ? k : document.createTextNode(k));
+  return n;
+};
+const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s + "T00:00:00"));
+const isPast = s => isDate(s) && s < today();
+const MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+const prettyDate = s => isDate(s) ? `${+s.slice(8)} ${MONTHS[+s.slice(5, 7) - 1]} ${s.slice(0, 4)}` : (s || "");
+const fmtNum = n => Number(n).toLocaleString("sv-SE");
+const isEmpty = v => v == null || v === "" || (Array.isArray(v) && v.length === 0);
+const clone = o => JSON.parse(JSON.stringify(o));
+const slug = s => (s || "").toLowerCase()
+  .replace(/[åä]/g, "a").replace(/ö/g, "o").replace(/é/g, "e").replace(/ü/g, "u")
+  .normalize("NFD").replace(/[̀-ͯ]/g, "")
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 48);
+const validURL = s => { try { const u = new URL(s); return (u.protocol === "https:" || u.protocol === "http:") && !/\s/.test(s); } catch { return false; } };
+const validEmail = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+const DAY_NAMES = ["mån", "tis", "ons", "tor", "fre", "lör", "sön"];
+const validDays = s => {
+  const t = s.toLowerCase();
+  const parts = t.split(/[–-]/).map(x => x.trim());
+  if (parts.length === 2) return DAY_NAMES.some(d => parts[0].startsWith(d)) && DAY_NAMES.some(d => parts[1].startsWith(d));
+  return t.split(/[, ]+/).filter(Boolean).every(p => DAY_NAMES.some(d => p.startsWith(d)));
+};
+const validTime = s => /^\d{1,2}([.:]\d{2})?\s*[–-]\s*\d{1,2}([.:]\d{2})?$/.test(s.trim());
+
+function toast(msg, ms = 2600) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), ms);
+}
+
+function utf8ToB64(str) {
+  const bytes = new TextEncoder().encode(str); let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\s/g, "")); const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+const store = {
+  get(k, d = null) { try { const v = localStorage.getItem("fcEditor." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { v == null ? localStorage.removeItem("fcEditor." + k) : localStorage.setItem("fcEditor." + k, JSON.stringify(v)); } catch {} }
+};
+
+/* ------------------------------------------------------------------ *
+ * Tillstånd                                                          *
+ * ------------------------------------------------------------------ */
+
+const state = {
+  data: null,          // det som redigeras
+  original: null,      // senast inlästa/publicerade versionen (rensad)
+  sha: null,           // GitHub-version av filen
+  source: null,        // "github" | "pages" | "file"
+  section: store.get("section", "campaigns"),
+  showErrors: false
+};
+const openItems = new WeakSet();   // vilka kort som är utfällda
+const autoId = new WeakSet();      // nya poster vars id följer rubriken
+
+function repoConfig() {
+  const host = location.hostname, seg = location.pathname.split("/").filter(Boolean);
+  const guessOwner = host.endsWith(".github.io") ? host.split(".")[0] : "wingflick";
+  const guessRepo = host.endsWith(".github.io") && seg.length && seg[0] !== "editor" ? seg[0] : "fritidscenter";
+  const saved = store.get("repo", {});
+  return { owner: saved.owner || guessOwner, repo: saved.repo || guessRepo, path: saved.path || "content.json", branch: saved.branch || "" };
+}
+const token = () => store.get("token");
+
+/* ------------------------------------------------------------------ *
+ * Rensning: det som sparas ska alltid kunna läsas av appen.          *
+ * Tomma valfria fält tas bort (en tom adress gör annars att appen    *
+ * inte kan läsa filen). Okända fält behålls som de är.               *
+ * ------------------------------------------------------------------ */
+
+function cleanObject(obj, fields) {
+  const out = {};
+  const known = new Set();
+  for (const f of fields) {
+    if (f.type === "latlon") {
+      known.add("latitude"); known.add("longitude");
+      if (typeof obj.latitude === "number" && typeof obj.longitude === "number") { out.latitude = obj.latitude; out.longitude = obj.longitude; }
+      continue;
+    }
+    const key = f.type === "id" ? "id" : f.key;
+    known.add(key);
+    let v = obj[key];
+    if (typeof v === "string") v = v.trim();
+    if (f.type === "bool") {
+      if (v === undefined || v === null) continue;
+      if (v === (f.default ?? false)) continue;
+      out[key] = !!v; continue;
+    }
+    if (f.type === "list") {
+      const arr = (v || []).map(x => cleanObject(x, f.fields));
+      if (arr.length) out[key] = arr; continue;
+    }
+    if (f.type === "hours") {
+      const arr = (v || []).map(h => ({ days: (h.days || "").trim(), time: (h.time || "").trim() })).filter(h => h.days || h.time);
+      if (arr.length) out[key] = arr; continue;
+    }
+    if (f.type === "strings") {
+      const arr = (v || []).map(s => (s || "").trim()).filter(Boolean);
+      if (arr.length) out[key] = arr; continue;
+    }
+    if (f.type === "checklist") {
+      out[key] = (v || []).map(i => ({ id: String(i.id), text: (i.text || "").trim() })).filter(i => i.text); continue;
+    }
+    if (isEmpty(v)) continue;
+    out[key] = v;
+  }
+  for (const [k, v] of Object.entries(obj)) if (!known.has(k)) out[k] = v;
+  return out;
+}
+
+function cleanAll(data) {
+  const out = {};
+  for (const k of TOP_ORDER) {
+    const sec = SECTION_LIST.find(s => s.key === k);
+    if (k === "updated") { if (data.updated) out.updated = data.updated; continue; }
+    if (!sec) continue;
+    out[k] = sec.type === "list" ? (data[k] || []).map(x => cleanObject(x, sec.fields)) : cleanObject(data[k] || {}, sec.fields);
+  }
+  for (const [k, v] of Object.entries(data)) if (!(k in out) && k !== "updated") out[k] = v;
+  return out;
+}
+
+const serialize = data => JSON.stringify(data, null, 2) + "\n";
+
+/* ------------------------------------------------------------------ *
+ * Validering. Fel stoppar publicering, varningar gör det inte.       *
+ * ------------------------------------------------------------------ */
+
+function validate() {
+  const issues = new Map(); // path -> {level, msg}
+  const counts = {};
+  const add = (sec, path, level, msg) => {
+    if (!issues.has(path) || issues.get(path).level === "warn") issues.set(path, { level, msg });
+    if (level === "err") counts[sec] = (counts[sec] || 0) + 1;
+  };
+  for (const sec of SECTION_LIST) {
+    const v = state.data[sec.key];
+    if (sec.type === "list") validateList(sec.key, sec.key, v || [], sec, add);
+    else validateFields(sec.key, sec.key, v || {}, sec.fields, add);
+  }
+  return { issues, counts, total: Object.values(counts).reduce((a, b) => a + b, 0) };
+}
+
+function validateList(sec, path, arr, def, add) {
+  const idKey = def.idKey || "id";
+  const seen = new Map();
+  arr.forEach((item, i) => {
+    const p = `${path}.${i}`;
+    validateFields(sec, p, item, def.fields, add);
+    const hasId = def.fields.some(f => f.type === "id" || (f.key === idKey && f.unique));
+    if (hasId) {
+      const id = (item[idKey] ?? "").toString().trim();
+      if (!id) add(sec, `${p}.${idKey}`, "err", "Saknar id.");
+      else if (seen.has(id)) add(sec, `${p}.${idKey}`, "err", `Samma id som en annan post ("${id}").`);
+      else seen.set(id, i);
+    }
+  });
+}
+
+function validateFields(sec, path, obj, fields, add) {
+  for (const f of fields) {
+    if (f.type === "id") continue;
+    const p = `${path}.${f.key}`;
+    const v = obj[f.key];
+    const str = typeof v === "string" ? v.trim() : v;
+    switch (f.type) {
+      case "latlon": {
+        const la = obj.latitude, lo = obj.longitude;
+        const hasLa = typeof la === "number", hasLo = typeof lo === "number";
+        if (!hasLa && !hasLo) { if (f.required) add(sec, p, "err", "Ange latitud och longitud."); }
+        else if (hasLa !== hasLo) add(sec, p, "err", "Ange både latitud och longitud.");
+        else if (la < -90 || la > 90 || lo < -180 || lo > 180) add(sec, p, "err", "Koordinaterna är utanför kartan.");
+        else if (la < 55 || la > 69.5 || lo < 10 || lo > 24.5) add(sec, p, "warn", "Platsen ligger utanför Sverige. Har latitud och longitud bytt plats?");
+        continue;
+      }
+      case "list":
+        validateList(sec, p, v || [], f, add);
+        if (f.required && isEmpty(v)) add(sec, p, "err", "Lägg till minst en.");
+        continue;
+      case "hours":
+        (v || []).forEach((h, i) => {
+          const d = (h.days || "").trim(), t = (h.time || "").trim();
+          if (!d && !t) return;
+          if (!d || !t) add(sec, `${p}.${i}`, "err", "Fyll i både dagar och tid.");
+          else if (!validDays(d) || !validTime(t)) add(sec, `${p}.${i}`, "warn", "Appen kan inte tolka raden, så \"Öppet nu\" visas inte för den. Skriv t.ex. \"Mån–fre\" och \"10–18\".");
+        });
+        continue;
+      case "checklist":
+        if (f.required && !(v || []).some(i => (i.text || "").trim())) add(sec, p, "err", "Lägg till minst en punkt.");
+        continue;
+      case "strings": case "bool": continue;
+    }
+    if (isEmpty(str)) { if (f.required) add(sec, p, "err", "Måste fyllas i."); continue; }
+    if ((f.type === "url" || f.type === "image") && !validURL(str)) add(sec, p, "err", "Adressen måste börja med https:// och får inte innehålla mellanslag.");
+    else if (f.type === "url" && str.startsWith("http://")) add(sec, p, "warn", "Använd helst https://.");
+    if (f.type === "email" && !validEmail(str)) add(sec, p, "err", "Ser inte ut som en e-postadress.");
+    if (f.type === "date" && !isDate(str)) add(sec, p, "err", "Välj ett datum.");
+    if (f.type === "int" && !Number.isInteger(v)) add(sec, p, "err", "Ange ett heltal.");
+    if (f.key === "validUntil" && isPast(str)) add(sec, p, "warn", "Datumet har passerat. Ta bort posten om den inte ska synas längre.");
+  }
+}
+
+let lastValidation = { issues: new Map(), counts: {}, total: 0 };
+
+function refreshValidation() {
+  lastValidation = validate();
+  document.querySelectorAll("[data-path]").forEach(node => {
+    const issue = lastValidation.issues.get(node.dataset.path);
+    const show = issue && (issue.level === "warn" || state.showErrors || node.dataset.touched);
+    node.classList.toggle("has-err", !!(show && issue.level === "err"));
+    node.classList.toggle("has-warn", !!(show && issue.level === "warn"));
+    const m = node.querySelector(":scope > .msg");
+    if (m) m.textContent = show ? issue.msg : "";
+  });
+  // Felmärken på kort
+  document.querySelectorAll("[data-item-path]").forEach(card => {
+    const pre = card.dataset.itemPath + ".";
+    let errs = 0;
+    for (const [p, i] of lastValidation.issues) if (i.level === "err" && p.startsWith(pre)) errs++;
+    const b = card.querySelector(":scope > summary .errbadge");
+    if (b) { b.hidden = !(errs && state.showErrors); b.textContent = errs === 1 ? "1 fel" : errs + " fel"; }
+  });
+  renderNav();
+  updateStatus();
+}
+
+/* ------------------------------------------------------------------ *
+ * Ändringar                                                          *
+ * ------------------------------------------------------------------ */
+
+function changedSections() {
+  if (!state.original) return [];
+  const a = cleanAll(state.data), b = state.original;
+  return SECTION_LIST.filter(s => JSON.stringify(a[s.key]) !== JSON.stringify(b[s.key]));
+}
+
+let saveDraftTimer;
+function changed(structural = false) {
+  clearTimeout(saveDraftTimer);
+  saveDraftTimer = setTimeout(() => {
+    const dirty = changedSections().length > 0;
+    store.set("draft", dirty ? { data: state.data, baseSha: state.sha, savedAt: Date.now() } : null);
+  }, 400);
+  if (structural) renderMain();
+  refreshValidation();
+}
+
+function updateStatus() {
+  const ch = changedSections();
+  const btn = $("#publishBtn");
+  const s = $("#status");
+  const who = state.source === "github" ? `${repoConfig().owner}/${repoConfig().repo}` : null;
+  if (!token()) {
+    btn.replaceChildren("Logga in", el("span", { class: "long", text: " för att publicera" })); btn.disabled = !state.data;
+  } else {
+    btn.textContent = ch.length ? `Publicera (${ch.length})` : "Publicera"; btn.disabled = !ch.length;
+  }
+  if (!state.data) return;
+  const parts = [];
+  if (who) parts.push(who); else if (state.source === "pages") parts.push("Endast läsning");
+  else if (state.source === "file") parts.push("Fil från datorn");
+  if (state.original?.updated) parts.push("senast ändrad " + prettyDate(state.original.updated));
+  if (ch.length) parts.push("ändringar i " + ch.map(c => c.title.toLowerCase()).join(", "));
+  s.textContent = parts.join(" · ");
+}
+
+window.addEventListener("beforeunload", e => { if (changedSections().length) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ------------------------------------------------------------------ *
+ * Navigering                                                         *
+ * ------------------------------------------------------------------ */
+
+function renderNav() {
+  const nav = $("#nav"); const ch = new Set(changedSections().map(s => s.key));
+  nav.replaceChildren(...SECTIONS.map(s => {
+    if (s.group) return el("div", { class: "group", text: s.group });
+    const v = state.data?.[s.key];
+    const n = s.type === "list" ? (v || []).length : null;
+    const err = lastValidation.counts[s.key];
+    return el("button", { class: s.key === state.section ? "active" : "", onclick: () => go(s.key), "aria-current": s.key === state.section ? "page" : null },
+      s.title,
+      ch.has(s.key) ? el("span", { class: "dot changed", title: "Ändrad", text: "•" }) : null,
+      err && state.showErrors ? el("span", { class: "dot err", title: "Fel att rätta", text: err }) : (n != null ? el("span", { class: "count", text: n }) : null));
+  }));
+}
+
+function go(key) {
+  state.section = key; store.set("section", key);
+  renderMain(); renderNav(); window.scrollTo({ top: 0 });
+}
+
+/* ------------------------------------------------------------------ *
+ * Formulär                                                           *
+ * ------------------------------------------------------------------ */
+
+function renderMain() {
+  const main = $("#main");
+  if (!state.data) return;
+  const sec = SECTION_LIST.find(s => s.key === state.section) || SECTION_LIST[0];
+  state.section = sec.key;
+  const kids = [];
+
+  const head = el("div", { class: "section-head" },
+    el("div", { class: "grow" }, el("h1", { text: sec.title }), el("p", { text: sec.intro })));
+  if (sec.sortable === "date") {
+    head.append(el("button", { class: "btn small", onclick: () => {
+      state.data[sec.key].sort((a, b) => (a.date || "9999").localeCompare(b.date || "9999")); changed(true); toast("Sorterat efter datum");
+    } }, "Sortera efter datum"));
+  }
+  kids.push(head);
+
+  if (state.source === "pages") kids.push(el("div", { class: "banner warn" },
+    el("b", { text: "Du tittar på den publicerade filen." }),
+    "Logga in med en GitHub-nyckel för att kunna publicera ändringar.",
+    el("div", { class: "row" }, el("button", { class: "btn small primary", onclick: openLogin }, "Logga in"))));
+
+  if (sec.type === "list") {
+    if (!Array.isArray(state.data[sec.key])) state.data[sec.key] = [];
+    kids.push(listEditor(state.data[sec.key], sec, sec.key, true));
+  } else {
+    if (!state.data[sec.key] || typeof state.data[sec.key] !== "object") state.data[sec.key] = {};
+    kids.push(el("div", { class: "card plain" }, fieldsGrid(state.data[sec.key], sec.fields, sec.key, sec)));
+  }
+  main.replaceChildren(...kids);
+  refreshValidation();
+}
+
+function listEditor(arr, def, path, top = false) {
+  const wrap = el("div");
+  if (!arr.length) wrap.append(el("div", { class: "empty", text: `Inga ${top ? def.title.toLowerCase() : "poster"} ännu.` }));
+  arr.forEach((item, i) => wrap.append(itemCard(arr, i, def, `${path}.${i}`, top)));
+  wrap.append(el("button", { class: "btn add" + (top ? " primary" : " small"), onclick: () => {
+    const item = {};
+    if (def.fields.some(f => f.type === "id")) { item.id = ""; autoId.add(item); }
+    for (const f of def.fields) if (f.type === "checklist") item[f.key] = [];
+    if (def.key === "workshopOrders") item.step = 0;
+    arr.push(item); openItems.add(item); changed(true);
+    requestAnimationFrame(() => {
+      const cards = wrap.querySelectorAll(":scope > details");
+      const last = cards[cards.length - 1];
+      last?.scrollIntoView({ behavior: "smooth", block: "center" });
+      last?.querySelector("input, textarea")?.focus({ preventScroll: true });
+    });
+  } }, "+ Lägg till " + (def.noun || "post")));
+  return wrap;
+}
+
+function itemCard(arr, i, def, path, top) {
+  const item = arr[i];
+  const sum = def.summary ? def.summary(item) : { title: item.title || item.name };
+  const card = el("details", { class: "card" + (top ? "" : " nested"), "data-item-path": path });
+  card.open = openItems.has(item);
+  card.addEventListener("toggle", () => { card.open ? openItems.add(item) : openItems.delete(item); });
+
+  const titleEl = el("span", { class: "title", text: sum.title || "Utan rubrik" });
+  const subEl = el("span", { class: "sub", text: sum.sub || "" });
+  const move = (d) => (e) => {
+    e.preventDefault(); const j = i + d; if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]]; changed(true);
+  };
+  const summary = el("summary", {},
+    el("span", { class: "chev", text: "▶" }),
+    sum.img !== undefined ? (sum.img && validURL(sum.img) ? el("img", { class: "thumb", src: sum.img, alt: "", loading: "lazy", onerror: e => { e.target.hidden = true; } }) : null) : null,
+    el("span", { class: "meta" }, titleEl, sum.sub ? subEl : null),
+    ...(sum.badges || []).map(([k, t]) => el("span", { class: "badge " + k, text: t })),
+    el("span", { class: "badge err errbadge", hidden: true }),
+    el("span", { class: "tools" },
+      el("button", { class: "iconbtn", title: "Flytta upp", "aria-label": "Flytta upp", disabled: i === 0, onclick: move(-1) }, "↑"),
+      el("button", { class: "iconbtn", title: "Flytta ned", "aria-label": "Flytta ned", disabled: i === arr.length - 1, onclick: move(1) }, "↓"),
+      el("button", { class: "iconbtn", title: "Kopiera", "aria-label": "Kopiera", onclick: (e) => {
+        e.preventDefault(); const c = clone(item);
+        const titleKey = def.titleKey || "title";
+        if (typeof c[titleKey] === "string") c[titleKey] += " (kopia)";
+        if ("id" in c && def.fields.some(f => f.type === "id")) { c.id = slug(c[titleKey]) || ""; autoId.add(c); }
+        arr.splice(i + 1, 0, c); openItems.add(c); changed(true);
+      } }, "⧉"),
+      el("button", { class: "iconbtn", title: "Ta bort", "aria-label": "Ta bort", onclick: (e) => {
+        e.preventDefault();
+        if (!confirm(`Ta bort "${sum.title || "posten"}"?`)) return;
+        arr.splice(i, 1); changed(true); toast("Borttagen. Ändringen syns när du publicerar.");
+      } }, "✕")));
+  card.append(summary);
+  const body = el("div", { class: "body" }, fieldsGrid(item, def.fields, path, def, () => {
+    const s = def.summary ? def.summary(item) : { title: item.title || item.name };
+    titleEl.textContent = s.title || "Utan rubrik"; subEl.textContent = s.sub || "";
+  }));
+  card.append(body);
+  return card;
+}
+
+function fieldsGrid(obj, fields, path, def, onChange = () => {}) {
+  const grid = el("div", { class: "grid" });
+  for (const f of fields) {
+    if (f.type === "id") continue;
+    grid.append(field(obj, f, `${path}.${f.key}`, def, onChange));
+  }
+  const idField = fields.find(f => f.type === "id");
+  if (idField) grid.append(idLine(obj, path, def));
+  return grid;
+}
+
+function idLine(obj, path, def) {
+  const titleKey = def.titleKey || "title";
+  const wrap = el("div", { class: "field full", "data-path": `${path}.id` });
+  const input = el("input", { type: "text", value: obj.id ?? "", spellcheck: "false", "aria-label": "Id" });
+  input.addEventListener("input", () => { obj.id = input.value.trim(); autoId.delete(obj); changed(); });
+  input.addEventListener("blur", () => { wrap.dataset.touched = "1"; refreshValidation(); });
+  wrap._sync = () => { if (autoId.has(obj)) { obj.id = slug(obj[titleKey]); input.value = obj.id; } };
+  wrap.append(el("div", { class: "idline" }, "Id:", input,
+    el("span", { text: autoId.has(obj) ? "Skapas från rubriken." : (def.idWarning || "Används internt. Behöver inte ändras.") })),
+    el("div", { class: "msg" }));
+  return wrap;
+}
+
+function field(obj, f, path, def, onChange) {
+  const wrap = el("div", { class: "field" + (f.full ? " full" : ""), "data-path": path });
+  const id = "f" + Math.random().toString(36).slice(2, 9);
+  const label = el("label", { for: id }, f.label, f.required ? el("span", { class: "req", text: " *" }) : null);
+  const touch = () => { wrap.dataset.touched = "1"; refreshValidation(); };
+  const commit = (structural = false) => {
+    onChange();
+    if ((f.key === (def.titleKey || "title")) && autoId.has(obj)) {
+      obj.id = slug(obj[f.key]);
+      const idWrap = wrap.parentElement?.querySelector(`:scope > [data-path$=".id"]`);
+      idWrap?._sync?.();
+    }
+    changed(structural);
+  };
+  const hint = f.hint ? el("div", { class: "hint", text: f.hint }) : document.createTextNode("");
+  const msg = el("div", { class: "msg" });
+
+  const textInput = (type) => {
+    const inp = el(type === "textarea" ? "textarea" : "input", { id, placeholder: f.placeholder || null,
+      ...(type !== "textarea" ? { type } : {}), autocomplete: "off" });
+    inp.value = obj[f.key] ?? "";
+    inp.addEventListener("input", () => { obj[f.key] = inp.value; commit(); });
+    inp.addEventListener("blur", touch);
+    return inp;
+  };
+
+  switch (f.type) {
+    case "text": case "url": case "email": case "tel": case "textarea": {
+      wrap.append(label, textInput(f.type), hint, msg); break;
+    }
+    case "image": {
+      const inp = textInput("url");
+      const img = el("img", { class: "imgprev", alt: "" });
+      const upd = () => {
+        const v = (obj[f.key] || "").trim();
+        if (v && validURL(v)) { img.src = v; img.hidden = false; } else img.hidden = true;
+      };
+      img.onerror = () => { img.hidden = true; };
+      inp.addEventListener("change", upd); upd();
+      wrap.append(label, inp, hint, msg, img); break;
+    }
+    case "date": {
+      const inp = el("input", { id, type: "date" });
+      inp.value = isDate(obj[f.key]) ? obj[f.key] : "";
+      inp.addEventListener("change", () => { obj[f.key] = inp.value; commit(); touch(); });
+      wrap.append(label, el("div", { style: "display:flex;gap:8px;align-items:center" }, inp,
+        f.required ? null : el("button", { class: "btn small ghost", type: "button", onclick: () => { inp.value = ""; obj[f.key] = ""; commit(); } }, "Rensa")),
+        hint, msg); break;
+    }
+    case "int": {
+      const inp = el("input", { id, type: "number", step: "1", inputmode: "numeric" });
+      inp.value = obj[f.key] ?? "";
+      inp.addEventListener("input", () => {
+        const v = inp.value.trim(); obj[f.key] = v === "" ? null : (Number.isInteger(+v) ? +v : v); commit();
+      });
+      inp.addEventListener("blur", touch);
+      wrap.append(label, inp, hint, msg); break;
+    }
+    case "bool": {
+      const cb = el("input", { id, type: "checkbox" });
+      cb.checked = obj[f.key] ?? f.default ?? false;
+      cb.addEventListener("change", () => { obj[f.key] = cb.checked; commit(true); });
+      wrap.append(el("label", { class: "check", for: id }, cb, el("span", { text: f.label })), hint, msg); break;
+    }
+    case "select": {
+      const sel = el("select", { id }, ...f.options.map(([v, t]) => el("option", { value: v, text: t })));
+      sel.value = obj[f.key] == null ? "" : String(obj[f.key]);
+      sel.addEventListener("change", () => {
+        obj[f.key] = sel.value === "" ? null : (f.number ? Number(sel.value) : sel.value); commit(true);
+      });
+      wrap.append(label, sel, hint, msg); break;
+    }
+    case "icon": {
+      const listId = id + "l";
+      const inp = el("input", { id, type: "text", list: listId, placeholder: f.default, spellcheck: "false", autocomplete: "off" });
+      inp.value = obj[f.key] ?? "";
+      inp.addEventListener("input", () => { obj[f.key] = inp.value.trim(); commit(); });
+      wrap.append(label, inp,
+        el("datalist", { id: listId }, ...SF_ICONS.map(([v, t]) => el("option", { value: v, label: t }))),
+        el("div", { class: "hint" }, "Namn på en ", el("a", { href: "https://developer.apple.com/sf-symbols/", target: "_blank", rel: "noopener" }, "SF Symbol"), ". Välj i listan eller lämna tomt."),
+        msg); break;
+    }
+    case "latlon": {
+      const la = el("input", { id, type: "text", inputmode: "decimal", placeholder: "Latitud, t.ex. 58.3149", "aria-label": "Latitud" });
+      const lo = el("input", { type: "text", inputmode: "decimal", placeholder: "Longitud, t.ex. 12.3122", "aria-label": "Longitud" });
+      la.value = obj.latitude ?? ""; lo.value = obj.longitude ?? "";
+      const link = el("a", { target: "_blank", rel: "noopener", class: "btn small", text: "Visa på karta" });
+      const num = s => { const v = s.trim().replace(",", "."); return v === "" ? null : (isFinite(+v) ? +v : NaN); };
+      const set = () => {
+        // Klistrar man in "58.31, 12.31" (t.ex. från Google Maps) delas det upp automatiskt.
+        const pasted = la.value.match(/^\s*(-?\d+(?:\.\d+)?)\s*[,;\s]\s*(-?\d+(?:\.\d+)?)\s*$/);
+        if (pasted) { la.value = pasted[1]; lo.value = pasted[2]; }
+        const a = num(la.value), b = num(lo.value);
+        if (a === null) delete obj.latitude; else obj.latitude = a;
+        if (b === null) delete obj.longitude; else obj.longitude = b;
+        const ok = typeof obj.latitude === "number" && typeof obj.longitude === "number" && !isNaN(obj.latitude) && !isNaN(obj.longitude);
+        link.hidden = !ok;
+        if (ok) link.href = `https://www.openstreetmap.org/?mlat=${obj.latitude}&mlon=${obj.longitude}#map=16/${obj.latitude}/${obj.longitude}`;
+        commit();
+      };
+      la.addEventListener("input", set); lo.addEventListener("input", set);
+      la.addEventListener("blur", touch); lo.addEventListener("blur", touch);
+      const ok0 = typeof obj.latitude === "number" && typeof obj.longitude === "number";
+      link.hidden = !ok0;
+      if (ok0) link.href = `https://www.openstreetmap.org/?mlat=${obj.latitude}&mlon=${obj.longitude}#map=16/${obj.latitude}/${obj.longitude}`;
+      wrap.append(label, el("div", { class: "latlon" }, la, lo, link),
+        el("div", { class: "hint", text: "Tips: högerklicka på platsen i Google Maps, klicka på koordinaterna och klistra in dem i första rutan." }), msg);
+      break;
+    }
+    case "hours": {
+      if (!Array.isArray(obj[f.key])) obj[f.key] = [];
+      const arr = obj[f.key];
+      const rows = el("div");
+      arr.forEach((h, i) => {
+        const rowWrap = el("div", { class: "field", style: "margin-top:0", "data-path": `${path}.${i}` });
+        const d = el("input", { type: "text", class: "narrow", placeholder: "Mån–fre", "aria-label": "Dagar" });
+        const t = el("input", { type: "text", placeholder: "10–18", "aria-label": "Tid" });
+        d.value = h.days || ""; t.value = h.time || "";
+        d.addEventListener("input", () => { h.days = d.value; commit(); });
+        t.addEventListener("input", () => { h.time = t.value; commit(); });
+        d.addEventListener("blur", () => { rowWrap.dataset.touched = "1"; refreshValidation(); });
+        t.addEventListener("blur", () => { rowWrap.dataset.touched = "1"; refreshValidation(); });
+        rowWrap.append(el("div", { class: "inline-row" }, d, t,
+          el("button", { class: "iconbtn", type: "button", title: "Flytta upp", "aria-label": "Flytta upp", disabled: i === 0, onclick: () => { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; commit(true); } }, "↑"),
+          el("button", { class: "iconbtn", type: "button", title: "Ta bort rad", "aria-label": "Ta bort rad", onclick: () => { arr.splice(i, 1); commit(true); } }, "✕")),
+          el("div", { class: "msg" }));
+        rows.append(rowWrap);
+      });
+      wrap.append(el("div", { class: "label", text: f.label }), rows,
+        el("button", { class: "btn small", type: "button", onclick: () => { arr.push({ days: "", time: "" }); commit(true); focusLast(wrap); } }, "+ Lägg till rad"),
+        hint, msg);
+      break;
+    }
+    case "strings": {
+      if (!Array.isArray(obj[f.key])) obj[f.key] = [];
+      const arr = obj[f.key];
+      const rows = el("div");
+      arr.forEach((s, i) => {
+        const inp = el("input", { type: "text", "aria-label": f.label + " " + (i + 1) });
+        inp.value = s;
+        inp.addEventListener("input", () => { arr[i] = inp.value; commit(); });
+        rows.append(el("div", { class: "inline-row" }, inp,
+          el("button", { class: "iconbtn", type: "button", title: "Flytta upp", "aria-label": "Flytta upp", disabled: i === 0, onclick: () => { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; commit(true); } }, "↑"),
+          el("button", { class: "iconbtn", type: "button", title: "Ta bort", "aria-label": "Ta bort", onclick: () => { arr.splice(i, 1); commit(true); } }, "✕")));
+      });
+      wrap.append(el("div", { class: "label", text: f.label }), rows,
+        el("button", { class: "btn small", type: "button", onclick: () => { arr.push(""); commit(true); focusLast(wrap); } }, "+ " + (f.addLabel || "Lägg till")),
+        hint, msg);
+      break;
+    }
+    case "checklist": {
+      if (!Array.isArray(obj[f.key])) obj[f.key] = [];
+      const arr = obj[f.key];
+      const rows = el("div");
+      const nextId = () => String(arr.reduce((m, x) => Math.max(m, parseInt(x.id, 10) || 0), 0) + 1);
+      arr.forEach((it, i) => {
+        const inp = el("input", { type: "text", "aria-label": "Punkt " + (i + 1) });
+        inp.value = it.text || "";
+        inp.addEventListener("input", () => { it.text = inp.value; commit(); });
+        inp.addEventListener("keydown", e => {
+          if (e.key === "Enter") { e.preventDefault(); arr.splice(i + 1, 0, { id: nextId(), text: "" }); commit(true); focusNth(wrap, i + 1); }
+        });
+        rows.append(el("div", { class: "inline-row" }, el("span", { style: "color:var(--ink-2);width:22px;text-align:right;flex-shrink:0", text: (i + 1) + "." }), inp,
+          el("button", { class: "iconbtn", type: "button", title: "Flytta upp", "aria-label": "Flytta upp", disabled: i === 0, onclick: () => { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; commit(true); } }, "↑"),
+          el("button", { class: "iconbtn", type: "button", title: "Ta bort", "aria-label": "Ta bort", onclick: () => { arr.splice(i, 1); commit(true); } }, "✕")));
+      });
+      wrap.append(el("div", { class: "label" }, f.label, f.required ? el("span", { class: "req", text: " *" }) : null), rows,
+        el("button", { class: "btn small", type: "button", onclick: () => { arr.push({ id: nextId(), text: "" }); commit(true); focusLast(wrap); } }, "+ Lägg till punkt"),
+        el("div", { class: "hint", text: "Tryck Enter för att lägga till nästa punkt." }), msg);
+      break;
+    }
+    case "list": {
+      if (!Array.isArray(obj[f.key])) obj[f.key] = [];
+      wrap.append(el("div", { class: "label", text: f.label }), listEditor(obj[f.key], f, path, false), hint, msg);
+      break;
+    }
+  }
+  return wrap;
+}
+
+// Efter en omritning: sätt fokus i nyss tillagd rad i samma fält.
+function focusLast(wrap) { focusNth(wrap, -1); }
+function focusNth(wrap, n) {
+  const path = wrap.dataset.path;
+  requestAnimationFrame(() => {
+    const w = document.querySelector(`[data-path="${CSS.escape(path)}"]`);
+    const rows = w ? w.querySelectorAll(".inline-row") : [];
+    const row = n < 0 ? rows[rows.length - 1] : rows[n];
+    row?.querySelector("input")?.focus();
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ * GitHub                                                             *
+ * ------------------------------------------------------------------ */
+
+async function gh(path, opts = {}) {
+  const res = await fetch("https://api.github.com" + path, {
+    ...opts,
+    headers: { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28",
+      Authorization: "Bearer " + token(), ...(opts.body ? { "Content-Type": "application/json" } : {}) }
+  });
+  let body = null; try { body = await res.json(); } catch {}
+  if (!res.ok) { const e = new Error(body?.message || res.statusText); e.status = res.status; throw e; }
+  return body;
+}
+
+async function resolveBranch() {
+  const cfg = repoConfig();
+  if (cfg.branch) return cfg.branch;
+  const repo = await gh(`/repos/${cfg.owner}/${cfg.repo}`);
+  if (repo.permissions && !repo.permissions.push) { const e = new Error("Nyckeln får inte skriva till repot."); e.status = 403; throw e; }
+  return repo.default_branch;
+}
+
+async function loadFromGitHub() {
+  const cfg = repoConfig();
+  const branch = await resolveBranch();
+  const file = await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIComponent(cfg.path).replace(/%2F/g, "/")}?ref=${encodeURIComponent(branch)}`);
+  let text;
+  if (file.content) text = b64ToUtf8(file.content);
+  else {
+    const blob = await gh(`/repos/${cfg.owner}/${cfg.repo}/git/blobs/${file.sha}`);
+    text = b64ToUtf8(blob.content);
+  }
+  return { data: JSON.parse(text), sha: file.sha, branch };
+}
+
+async function loadFromPages() {
+  const urls = ["../content.json", "content.json"];
+  for (const u of urls) {
+    try { const r = await fetch(u + "?t=" + Date.now(), { cache: "no-store" }); if (r.ok) return await r.json(); } catch {}
+  }
+  throw new Error("Hittade ingen content.json bredvid editorn.");
+}
+
+function setData(data, sha, source) {
+  state.data = clone(data);
+  state.original = cleanAll(clone(data));
+  state.sha = sha; state.source = source; state.showErrors = false;
+  renderMain(); renderNav(); updateStatus();
+}
+
+async function load({ silent = false } = {}) {
+  $("#status").textContent = "Läser in…";
+  let loaded = null, err = null;
+  if (token()) {
+    try { const r = await loadFromGitHub(); loaded = { data: r.data, sha: r.sha, source: "github" }; }
+    catch (e) { err = e; }
+  }
+  if (!loaded) {
+    try { loaded = { data: await loadFromPages(), sha: null, source: "pages" }; }
+    catch (e) { err = err || e; }
+  }
+  if (!loaded) {
+    $("#main").replaceChildren(el("div", { class: "banner err" }, el("b", { text: "Kunde inte läsa in innehållet." }), String(err?.message || err),
+      el("div", { class: "row" }, el("button", { class: "btn small primary", onclick: openLogin }, "Logga in"),
+        el("button", { class: "btn small", onclick: () => $("#fileInput").click() }, "Öppna fil från datorn"))));
+    $("#status").textContent = "";
+    return;
+  }
+  setData(loaded.data, loaded.sha, loaded.source);
+  if (err && token()) {
+    toast(err.status === 401 ? "GitHub-nyckeln fungerar inte längre. Logga in igen." : "Kunde inte läsa från GitHub: " + err.message, 5000);
+  }
+
+  // Osparade ändringar från förra gången?
+  const draft = store.get("draft");
+  if (draft && !silent) {
+    const asNow = serialize(cleanAll(draft.data)) === serialize(state.original);
+    if (asNow) store.set("draft", null);
+    else {
+      const when = new Date(draft.savedAt).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" });
+      const stale = draft.baseSha && state.sha && draft.baseSha !== state.sha;
+      const banner = el("div", { class: "banner warn" },
+        el("b", { text: `Du har opublicerade ändringar från ${when}.` }),
+        stale ? "Filen har ändrats på GitHub sedan dess. Återställer du dina ändringar skrivs de andra ändringarna över när du publicerar." : "Vill du fortsätta med dem?",
+        el("div", { class: "row" },
+          el("button", { class: "btn small primary", onclick: () => { state.data = clone(draft.data); banner.remove(); changed(true); toast("Ändringarna är återställda"); } }, "Återställ ändringarna"),
+          el("button", { class: "btn small", onclick: () => { store.set("draft", null); banner.remove(); } }, "Släng dem")));
+      $("#main").prepend(banner);
+    }
+  }
+}
+
+async function publish() {
+  const cfg = repoConfig();
+  const content = cleanAll(state.data);
+  content.updated = today();
+  const text = serialize(content);
+  // Kontroll: filen ska gå att läsa tillbaka.
+  JSON.parse(text);
+  const btn = $("#publishBtn"); btn.disabled = true; btn.textContent = "Publicerar…";
+  try {
+    const branch = await resolveBranch();
+    if (!state.sha) {
+      // Inläst från Pages eller fil: hämta GitHub-versionen så att publiceringen kan göras.
+      const cur = await loadFromGitHub();
+      state.sha = cur.sha;
+    }
+    const res = await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIComponent(cfg.path).replace(/%2F/g, "/")}`, {
+      method: "PUT",
+      body: JSON.stringify({ message: $("#commitMsg").value.trim() || "Uppdatera innehåll", content: utf8ToB64(text), sha: state.sha || undefined, branch })
+    });
+    store.set("draft", null);
+    setData(content, res.content.sha, "github");
+    toast("Publicerat! Ute om 1–2 minuter.", 4000);
+  } catch (e) {
+    if (e.status === 409 || (e.status === 422 && /sha/i.test(e.message))) {
+      alert("Någon annan har publicerat sedan du läste in filen.\n\nDina ändringar är sparade i webbläsaren. Läs in senaste versionen och välj sedan \"Återställ ändringarna\" om du vill skriva över, eller gör om dina ändringar.");
+    } else if (e.status === 401 || e.status === 403) {
+      alert("GitHub nekade publiceringen: " + e.message + "\n\nKontrollera att nyckeln har Contents: Read and write för repot och inte har gått ut.");
+    } else {
+      alert("Kunde inte publicera: " + e.message);
+    }
+  } finally { updateStatus(); }
+}
+
+/* ------------------------------------------------------------------ *
+ * Dialoger och meny                                                  *
+ * ------------------------------------------------------------------ */
+
+function openLogin() {
+  const cfg = repoConfig();
+  $("#tokenInput").value = token() || "";
+  $("#cfgOwner").value = cfg.owner; $("#cfgRepo").value = cfg.repo; $("#cfgPath").value = cfg.path; $("#cfgBranch").value = cfg.branch;
+  document.querySelectorAll(".repoOwner").forEach(n => n.textContent = cfg.owner);
+  document.querySelectorAll(".repoName").forEach(n => n.textContent = cfg.repo);
+  const m = $("#tokenMsg"); m.textContent = ""; m.parentElement.classList.remove("has-err");
+  $("#loginDialog").returnValue = "";
+  $("#loginDialog").showModal();
+}
+
+$("#loginDialog").addEventListener("close", async () => {
+  const d = $("#loginDialog");
+  if (d.returnValue !== "ok") return;
+  const t = $("#tokenInput").value.trim();
+  store.set("repo", { owner: $("#cfgOwner").value.trim(), repo: $("#cfgRepo").value.trim(), path: $("#cfgPath").value.trim() || "content.json", branch: $("#cfgBranch").value.trim() });
+  if (!t) return;
+  const prev = token();
+  store.set("token", t);
+  try {
+    await resolveBranch();
+    const keepEdits = state.data && changedSections().length ? clone(state.data) : null;
+    await load({ silent: true });
+    if (keepEdits) { state.data = keepEdits; changed(true); }
+    toast("Inloggad. Du kan nu publicera.");
+  } catch (e) {
+    store.set("token", prev);
+    const m = $("#tokenMsg");
+    m.textContent = e.status === 401 ? "GitHub känner inte igen nyckeln." :
+      e.status === 404 ? "Hittar inte repot. Kontrollera att nyckeln har åtkomst till just det repot." : e.message;
+    m.parentElement.classList.add("has-err");
+    d.returnValue = "";
+    d.showModal();
+  }
+});
+
+$("#publishBtn").addEventListener("click", () => {
+  if (!token()) return openLogin();
+  state.showErrors = true;
+  refreshValidation();
+  if (lastValidation.total) {
+    const first = SECTION_LIST.find(s => lastValidation.counts[s.key]);
+    if (first && first.key !== state.section) go(first.key);
+    // Fäll ut kort med fel
+    requestAnimationFrame(() => {
+      for (const [p, i] of lastValidation.issues) {
+        if (i.level !== "err") continue;
+        document.querySelectorAll("[data-item-path]").forEach(c => { if (p.startsWith(c.dataset.itemPath + ".")) c.open = true; });
+      }
+      document.querySelector(".has-err")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    toast(lastValidation.total === 1 ? "1 sak behöver rättas innan du kan publicera." : `${lastValidation.total} saker behöver rättas innan du kan publicera.`, 4000);
+    return;
+  }
+  const ch = changedSections();
+  if (!ch.length) return toast("Inga ändringar att publicera.");
+  $("#publishSummary").replaceChildren(el("p", { text: "Ändrat:" }), el("ul", { class: "changes" }, ...ch.map(c => el("li", { text: c.title }))));
+  $("#commitMsg").value = "Uppdatera " + ch.map(c => c.title.toLowerCase()).join(", ");
+  $("#publishDialog").returnValue = "";
+  $("#publishDialog").showModal();
+});
+$("#publishDialog").addEventListener("close", () => { if ($("#publishDialog").returnValue === "ok") publish(); });
+
+const menu = $("#menuList");
+$("#menuBtn").addEventListener("click", e => { e.stopPropagation(); menu.classList.toggle("open"); });
+document.addEventListener("click", () => menu.classList.remove("open"));
+menu.addEventListener("click", async e => {
+  const act = e.target.dataset.act; if (!act) return;
+  menu.classList.remove("open");
+  if (act === "login") openLogin();
+  if (act === "reload") {
+    if (changedSections().length && !confirm("Läsa in senaste versionen? Dina opublicerade ändringar finns kvar och kan återställas.")) return;
+    await load();
+  }
+  if (act === "discard") {
+    if (!changedSections().length) return toast("Inga ändringar att slänga.");
+    if (!confirm("Släng alla opublicerade ändringar?")) return;
+    store.set("draft", null); state.data = clone(state.original); state.showErrors = false; changed(true);
+  }
+  if (act === "download") {
+    const content = cleanAll(state.data);
+    const blob = new Blob([serialize(content)], { type: "application/json" });
+    const a = el("a", { href: URL.createObjectURL(blob), download: "content.json" }); document.body.append(a); a.click(); a.remove();
+  }
+  if (act === "upload") $("#fileInput").click();
+  if (act === "logout") { store.set("token", null); toast("Utloggad"); load({ silent: true }); }
+});
+
+$("#fileInput").addEventListener("change", async () => {
+  const f = $("#fileInput").files[0]; if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (state.data && state.source === "github") {
+      // Behåll GitHub-versionen som jämförelse så att filen kan publiceras.
+      state.data = data; changed(true);
+    } else setData(data, null, "file");
+    toast("Filen är inläst");
+  } catch (e) { alert("Filen kunde inte läsas som JSON: " + e.message); }
+  $("#fileInput").value = "";
+});
+
+load();
+</script>
+</body>
+</html>
