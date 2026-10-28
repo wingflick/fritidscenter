@@ -64,7 +64,7 @@ header.top {
 
 /* Layout */
 .layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); max-width: 1180px; margin: 0 auto; }
-nav.sections { position: sticky; top: 56px; align-self: start; padding: 20px 12px; max-height: calc(100vh - 56px); overflow: auto; }
+nav.sections { position: sticky; top: var(--header-h, 56px); align-self: start; padding: 20px 12px; max-height: calc(100vh - var(--header-h, 56px)); overflow: auto; }
 nav.sections .group { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 16px 10px 6px; }
 nav.sections button {
   display: flex; width: 100%; align-items: center; gap: 8px; text-align: left;
@@ -81,14 +81,15 @@ main { padding: 20px 20px 80px; min-width: 0; }
 @media (max-width: 760px) {
   .layout { display: block; }
   nav.sections {
-    position: sticky; top: 52px; z-index: 10; max-height: none; display: flex; gap: 6px; overflow-x: auto;
+    position: sticky; top: var(--header-h, 52px); z-index: 10; max-height: none; display: flex; gap: 6px; overflow-x: auto;
     padding: 10px 12px; background: var(--canvas); border-bottom: 1px solid var(--line);
   }
   nav.sections .group { display: none; }
   nav.sections button { width: auto; white-space: nowrap; background: var(--surface); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; }
   nav.sections button.active { box-shadow: none; border-color: var(--brand); color: var(--brand); }
   main { padding: 16px 16px 80px; }
-  .top .status { display: none; }
+  header.top { flex-wrap: wrap; }
+  .top .status { order: 3; flex-basis: 100%; font-size: 12px; margin-top: -2px; }
   .wordmark small { display: none; }
   .top .long { display: none; }
   header.top { gap: 8px; }
@@ -294,7 +295,7 @@ const HOURS = { key: "hours", label: "Öppettider", type: "hours",
 
 const SECTIONS = [
   { group: "Hem och kundklubb" },
-  { key: "campaigns", title: "Just nu", noun: "kampanj", type: "list",
+  { key: "campaigns", title: "Just nu", changeLabel: "kampanjer", noun: "kampanj", type: "list",
     intro: "Kampanjer som visas under \"Just nu\" på Hem, i den här ordningen. En kampanj döljs automatiskt dagen efter slutdatum.",
     summary: c => ({ title: c.title, sub: c.validUntil ? "Gäller t.o.m. " + prettyDate(c.validUntil) : (c.text || ""), img: c.imageURL,
       badges: isPast(c.validUntil) ? [["muted", "Har gått ut – dold"]] : [] }),
@@ -475,6 +476,15 @@ const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s + "
 const isPast = s => isDate(s) && s < today();
 const MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
 const prettyDate = s => isDate(s) ? `${+s.slice(8)} ${MONTHS[+s.slice(5, 7) - 1]} ${s.slice(0, 4)}` : (s || "");
+function prettyDateTime(iso) {
+  const d = new Date(iso); if (isNaN(d)) return "";
+  const time = d.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+  const day = x => x.toLocaleDateString("sv-SE");
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  if (day(d) === day(new Date())) return "idag " + time;
+  if (day(d) === day(y)) return "igår " + time;
+  return `${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3)}${d.getFullYear() !== new Date().getFullYear() ? " " + d.getFullYear() : ""} ${time}`;
+}
 const fmtNum = n => Number(n).toLocaleString("sv-SE");
 const isEmpty = v => v == null || v === "" || (Array.isArray(v) && v.length === 0);
 const clone = o => JSON.parse(JSON.stringify(o));
@@ -523,6 +533,7 @@ const state = {
   original: null,      // senast inlästa/publicerade versionen (rensad)
   sha: null,           // GitHub-version av filen
   source: null,        // "github" | "pages" | "file"
+  published: null,     // { date, by } från senaste commit av filen
   section: store.get("section", "campaigns"),
   showErrors: false
 };
@@ -735,8 +746,9 @@ function updateStatus() {
   const parts = [];
   if (who) parts.push(who); else if (state.source === "pages") parts.push("Endast läsning");
   else if (state.source === "file") parts.push("Fil från datorn");
-  if (state.original?.updated) parts.push("senast ändrad " + prettyDate(state.original.updated));
-  if (ch.length) parts.push("ändringar i " + ch.map(c => c.title.toLowerCase()).join(", "));
+  if (state.published) parts.push("publicerad " + prettyDateTime(state.published.date) + (state.published.by ? " av " + state.published.by : ""));
+  else if (state.original?.updated) parts.push("senast ändrad " + prettyDate(state.original.updated));
+  if (ch.length) parts.push("ändringar i " + ch.map(c => c.changeLabel || c.title.toLowerCase()).join(", "));
   s.textContent = parts.join(" · ");
 }
 
@@ -1088,7 +1100,7 @@ async function gh(path, opts = {}) {
   const res = await fetch("https://api.github.com" + path, {
     ...opts,
     headers: { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28",
-      Authorization: "Bearer " + token(), ...(opts.body ? { "Content-Type": "application/json" } : {}) }
+      ...(token() && !opts.anonymous ? { Authorization: "Bearer " + token() } : {}), ...(opts.body ? { "Content-Type": "application/json" } : {}) }
   });
   let body = null; try { body = await res.json(); } catch {}
   if (!res.ok) { const e = new Error(body?.message || res.statusText); e.status = res.status; throw e; }
@@ -1124,6 +1136,19 @@ async function loadFromPages() {
   throw new Error("Hittade ingen content.json bredvid editorn.");
 }
 
+async function loadPublished() {
+  // Senaste commit som ändrade filen. Repot är publikt, så det fungerar även utan nyckel.
+  const cfg = repoConfig();
+  const q = `/repos/${cfg.owner}/${cfg.repo}/commits?path=${encodeURIComponent(cfg.path)}&per_page=1` + (cfg.branch ? `&sha=${encodeURIComponent(cfg.branch)}` : "");
+  try {
+    let list;
+    try { list = await gh(q); } catch (e) { if (token()) list = await gh(q, { anonymous: true }); else throw e; }
+    const c = list?.[0]; if (!c) return;
+    state.published = { date: c.commit.committer?.date || c.commit.author?.date, by: c.author?.login || c.commit.author?.name || "" };
+    updateStatus();
+  } catch { /* då visas datumet från filen i stället */ }
+}
+
 function setData(data, sha, source) {
   state.data = clone(data);
   state.original = cleanAll(clone(data));
@@ -1150,6 +1175,7 @@ async function load({ silent = false } = {}) {
     return;
   }
   setData(loaded.data, loaded.sha, loaded.source);
+  loadPublished();
   if (err && token()) {
     toast(err.status === 401 ? "GitHub-nyckeln fungerar inte längre. Logga in igen." : "Kunde inte läsa från GitHub: " + err.message, 5000);
   }
@@ -1193,6 +1219,8 @@ async function publish() {
       body: JSON.stringify({ message: $("#commitMsg").value.trim() || "Uppdatera innehåll", content: utf8ToB64(text), sha: state.sha || undefined, branch })
     });
     store.set("draft", null);
+    const c = res.commit || {};
+    state.published = { date: c.committer?.date || new Date().toISOString(), by: c.author?.name || state.published?.by || "" };
     setData(content, res.content.sha, "github");
     toast("Publicerat! Ute om 1–2 minuter.", 4000);
   } catch (e) {
@@ -1267,7 +1295,7 @@ $("#publishBtn").addEventListener("click", () => {
   const ch = changedSections();
   if (!ch.length) return toast("Inga ändringar att publicera.");
   $("#publishSummary").replaceChildren(el("p", { text: "Ändrat:" }), el("ul", { class: "changes" }, ...ch.map(c => el("li", { text: c.title }))));
-  $("#commitMsg").value = "Uppdatera " + ch.map(c => c.title.toLowerCase()).join(", ");
+  $("#commitMsg").value = "Uppdatera " + ch.map(c => c.changeLabel || c.title.toLowerCase()).join(", ");
   $("#publishDialog").returnValue = "";
   $("#publishDialog").showModal();
 });
@@ -1310,6 +1338,9 @@ $("#fileInput").addEventListener("change", async () => {
   } catch (e) { alert("Filen kunde inte läsas som JSON: " + e.message); }
   $("#fileInput").value = "";
 });
+
+// Menyn ska ligga precis under headern, som kan bli två rader på mobil.
+new ResizeObserver(([e]) => document.documentElement.style.setProperty("--header-h", e.target.offsetHeight + "px")).observe($("header.top"));
 
 load();
 </script>
