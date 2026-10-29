@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integritetspolicy – Fritidskompassen</title>
+<meta name="description" content="Integritetspolicy för appen Fritidskompassen.">
+<style>
+  :root {
+    --brand: #CB3312;
+    --ink: #1C1C1C;
+    --ink-2: #555;
+    --bg: #FFFFFF;
+    --line: #E6E6E6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --brand: #F0603F; --ink: #F2F2F2; --ink-2: #B5B5B5; --bg: #151515; --line: #2C2C2C; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 4px; }
+  h2 { font-size: 20px; margin: 36px 0 8px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .meta { color: var(--ink-2); margin: 0 0 24px; }
+  a { color: var(--brand); }
+  ul { padding-left: 22px; }
+  li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-2); font-weight: 600; }
+  .bar { height: 6px; background: var(--brand); }
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<main>
+  <h1>Integritetspolicy för Fritidskompassen</h1>
+  <p class="meta">Gäller från 29 oktober 2026</p>
+
+  <p>Fritidskompassen är en app för kunder till Fritidscenter, återförsäljare av husbilar
+  och husvagnar med verkstad. Appen ges ut av Wingflick. Här beskriver vi vilka uppgifter
+  appen hanterar, var de hamnar och vad du kan göra själv.</p>
+
+  <p><strong>Kort sagt:</strong> appen har inget konto, ingen inloggning, ingen reklam och
+  ingen spårning eller statistik om hur du använder den. Det du lägger in sparas i din egen
+  telefon (och i ditt eget iCloud). Uppgifter skickas bara när du själv väljer att skicka
+  något till Fritidscenter eller slår på notiser.</p>
+
+  <h2>Uppgifter som bara sparas hos dig</h2>
+  <ul>
+    <li><strong>Mitt garage:</strong> dina fordon, till exempel registreringsnummer, modell
+      och datum för service och besiktning.</li>
+    <li><strong>Påminnelser</strong> och <strong>bockade punkter i checklistor</strong>.</li>
+    <li><strong>Dina kontaktuppgifter</strong> (namn, telefon, e-post) som du fyller i i
+      formulären, så att du slipper skriva dem igen.</li>
+  </ul>
+  <p>Är du inloggad på iCloud synkas uppgifterna mellan dina egna enheter via Apples
+  iCloud. De lagras då i ditt iCloud-konto, som bara du har tillgång till. Varken Wingflick
+  eller Fritidscenter kan se dem.</p>
+
+  <h2>Uppgifter du skickar till Fritidscenter</h2>
+  <table>
+    <tr><th>Funktion</th><th>Vad som skickas</th><th>Hur</th></tr>
+    <tr><td>Boka service</td>
+        <td>Namn, telefon, e-post, fordon och registreringsnummer, önskade tjänster, anläggning och datum, meddelande</td>
+        <td>Som e-post från din egen e-postapp, efter att du tryckt på Skicka</td></tr>
+    <tr><td>Fråga verkstaden</td>
+        <td>Samma som ovan samt de bilder du själv väljer eller tar</td>
+        <td>Som e-post från din egen e-postapp</td></tr>
+    <tr><td>Intresseanmälan på ett fordon</td>
+        <td>Förnamn, efternamn, telefon, e-post, meddelande och vilket fordon det gäller</td>
+        <td>Direkt till Fritidscenters webbplats, samma väg som formuläret på fritidscenter.se</td></tr>
+  </table>
+  <p>Fritidscenter ansvarar för uppgifterna när de har tagit emot dem och behandlar dem
+  enligt <a href="https://fritidscenter.se/integritetspolicy">Fritidscenters
+  integritetspolicy</a>.</p>
+  <p>Kameran och bildbiblioteket används bara när du själv väljer att bifoga bilder. Appen
+  läser inte av din position.</p>
+
+  <h2>Notiser</h2>
+  <p>Om du tillåter notiser och väljer vad du vill få (till exempel nyheter, en anläggning
+  eller intressen som husbil och verkstad) används Firebase Cloud Messaging från Google för
+  att leverera dem. Då hanteras en slumpmässig enhetsnyckel (token) och de ämnen du valt.
+  Inga namn, telefonnummer eller e-postadresser skickas till Firebase. Du kan ändra dina val
+  i appen under Mer → Notiser eller stänga av notiser i telefonens inställningar.</p>
+  <p>Påminnelser om service och besiktning skapas i din telefon och går inte via någon
+  server.</p>
+
+  <h2>Innehåll som hämtas</h2>
+  <p>För att visa aktuellt innehåll hämtar appen information från:</p>
+  <ul>
+    <li>fritidscenter.se (fordon till salu och nyheter)</li>
+    <li>GitHub Pages (kampanjer, tjänster, anläggningar och annat innehåll)</li>
+    <li>Fritidscenters hjälpcenter hos Intercom (guider)</li>
+    <li>Open-Meteo (väderprognos för ställplatserna, utifrån ställplatsens plats, inte din)</li>
+  </ul>
+  <p>Som vid alla anrop på internet ser dessa tjänster din IP-adress. Appen skickar inga
+  personuppgifter till dem.</p>
+
+  <h2>Hur länge uppgifterna sparas</h2>
+  <p>Uppgifterna i din telefon finns kvar tills du tar bort dem i appen eller tar bort
+  appen. Fordon och påminnelser som du tar bort försvinner också från dina andra enheter
+  via iCloud. Det du har skickat till Fritidscenter sparas enligt Fritidscenters
+  integritetspolicy.</p>
+
+  <h2>Dina rättigheter</h2>
+  <p>Du har rätt att få veta vilka uppgifter som behandlas om dig, få dem rättade eller
+  raderade och invända mot behandlingen. Uppgifter som du skickat till Fritidscenter
+  frågar du Fritidscenter om. Övriga frågor om appen besvarar vi gärna. Du kan också vända
+  dig till Integritetsskyddsmyndigheten (<a href="https://www.imy.se">imy.se</a>).</p>
+
+  <h2>Barn</h2>
+  <p>Appen riktar sig inte till barn under 13 år.</p>
+
+  <h2>Ändringar</h2>
+  <p>Ändras policyn uppdaterar vi den här sidan och datumet överst.</p>
+
+  <h2>Kontakt</h2>
+  <p>Wingflick<br>
+  E-post: <a href="mailto:wingflick.se@gmail.com">wingflick.se@gmail.com</a></p>
+</main>
+</body>
+</html>
