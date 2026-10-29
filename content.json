@@ -5,6 +5,12 @@
   },
   "campaigns": [
     {
+      "title": "Grästorp träffem",
+      "text": "15% rabatt med app koden",
+      "validUntil": "2026-10-31",
+      "id": "grastorp-traffem"
+    },
+    {
       "title": "TEst kampanj",
       "text": "Alla till valla och se bedrövelsen",
       "validUntil": "2026-11-07",
@@ -24,12 +30,6 @@
       "linkURL": "https://www.fritidscenter.se",
       "linkTitle": "Se modellerna",
       "id": "nyheter-2027"
-    },
-    {
-      "title": "Grästorp träffem",
-      "text": "15% rabatt med app koden",
-      "validUntil": "2026-10-31",
-      "id": "grastorp-traffem"
     }
   ],
   "services": [
