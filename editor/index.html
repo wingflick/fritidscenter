@@ -178,6 +178,12 @@ code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); pad
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .loading { padding: 60px 20px; text-align: center; color: var(--ink-2); }
+body.locked .layout { display: block; max-width: 560px; }
+body.locked nav.sections, body.locked #publishBtn, body.locked .menu-list .needs-login { display: none; }
+.gate { margin: 56px 16px; padding: 28px 24px; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.gate h1 { margin: 0 0 8px; font-size: 22px; }
+.gate p { color: var(--ink-2); margin: 0 auto 18px; max-width: 40ch; }
+.gate .msg { color: var(--err, #b42318); margin: -6px 0 16px; font-size: 14px; }
 .menu { position: relative; }
 .menu-list { position: absolute; right: 0; top: calc(100% + 6px); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18); padding: 6px; min-width: 220px; display: none; z-index: 30; }
 .menu-list.open { display: block; }
@@ -186,7 +192,7 @@ code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); pad
 .menu-list hr { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
 </style>
 </head>
-<body>
+<body class="locked">
 
 <header class="top">
   <div class="wordmark">Fritids<span>center</span><small>Innehåll i appen</small></div>
@@ -197,13 +203,13 @@ code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); pad
       <button class="btn" id="menuBtn" aria-haspopup="true" aria-label="Mer">⋯</button>
       <div class="menu-list" id="menuList">
         <button data-act="login">Logga in med GitHub-nyckel…</button>
-        <button data-act="reload">Läs in senaste versionen</button>
-        <button data-act="discard">Släng mina ändringar</button>
-        <hr>
-        <button data-act="download">Ladda ner content.json</button>
-        <button data-act="upload">Öppna en content.json från datorn…</button>
-        <hr>
-        <button data-act="logout">Logga ut</button>
+        <button class="needs-login" data-act="reload">Läs in senaste versionen</button>
+        <button class="needs-login" data-act="discard">Släng mina ändringar</button>
+        <hr class="needs-login">
+        <button class="needs-login" data-act="download">Ladda ner content.json</button>
+        <button class="needs-login" data-act="upload">Öppna en content.json från datorn…</button>
+        <hr class="needs-login">
+        <button class="needs-login" data-act="logout">Logga ut</button>
       </div>
     </div>
   </div>
@@ -211,7 +217,7 @@ code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); pad
 
 <div class="layout">
   <nav class="sections" id="nav" aria-label="Delar"></nav>
-  <main id="main"><div class="loading">Läser in innehållet…</div></main>
+  <main id="main"><div class="loading">Kontrollerar inloggning…</div></main>
 </div>
 
 <input type="file" id="fileInput" accept="application/json,.json" hidden>
@@ -219,8 +225,8 @@ code { font: 13px ui-monospace, Menlo, monospace; background: var(--canvas); pad
 <dialog id="loginDialog">
   <form method="dialog">
     <div class="d-body">
-      <h2>Logga in för att publicera</h2>
-      <p>Editorn sparar direkt i GitHub-repot med en personlig nyckel. Nyckeln sparas bara i den här webbläsaren.</p>
+      <h2>Logga in</h2>
+      <p>Editorn läser och sparar direkt i GitHub-repot med en personlig nyckel. Bara nycklar med skrivbehörighet till repot släpps in. Nyckeln sparas bara i den här webbläsaren.</p>
       <ol>
         <li>Gå till <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>.</li>
         <li>Ge den ett namn, t.ex. <i>Fritidscenter-editor</i>, och välj en giltighetstid.</li>
@@ -532,7 +538,7 @@ const state = {
   data: null,          // det som redigeras
   original: null,      // senast inlästa/publicerade versionen (rensad)
   sha: null,           // GitHub-version av filen
-  source: null,        // "github" | "pages" | "file"
+  source: null,        // "github" när inläst med giltig nyckel
   published: null,     // { date, by } från senaste commit av filen
   section: store.get("section", "campaigns"),
   showErrors: false
@@ -737,15 +743,10 @@ function updateStatus() {
   const btn = $("#publishBtn");
   const s = $("#status");
   const who = state.source === "github" ? `${repoConfig().owner}/${repoConfig().repo}` : null;
-  if (!token()) {
-    btn.replaceChildren("Logga in", el("span", { class: "long", text: " för att publicera" })); btn.disabled = !state.data;
-  } else {
-    btn.textContent = ch.length ? `Publicera (${ch.length})` : "Publicera"; btn.disabled = !ch.length;
-  }
-  if (!state.data) return;
+  btn.textContent = ch.length ? `Publicera (${ch.length})` : "Publicera"; btn.disabled = !ch.length;
+  if (!state.data) { s.textContent = "Inte inloggad"; return; }
   const parts = [];
-  if (who) parts.push(who); else if (state.source === "pages") parts.push("Endast läsning");
-  else if (state.source === "file") parts.push("Fil från datorn");
+  if (who) parts.push(who);
   if (state.published) parts.push("publicerad " + prettyDateTime(state.published.date) + (state.published.by ? " av " + state.published.by : ""));
   else if (state.original?.updated) parts.push("senast ändrad " + prettyDate(state.original.updated));
   if (ch.length) parts.push("ändringar i " + ch.map(c => c.changeLabel || c.title.toLowerCase()).join(", "));
@@ -796,11 +797,6 @@ function renderMain() {
     } }, "Sortera efter datum"));
   }
   kids.push(head);
-
-  if (state.source === "pages") kids.push(el("div", { class: "banner warn" },
-    el("b", { text: "Du tittar på den publicerade filen." }),
-    "Logga in med en GitHub-nyckel för att kunna publicera ändringar.",
-    el("div", { class: "row" }, el("button", { class: "btn small primary", onclick: openLogin }, "Logga in"))));
 
   if (sec.type === "list") {
     if (!Array.isArray(state.data[sec.key])) state.data[sec.key] = [];
@@ -1108,11 +1104,12 @@ async function gh(path, opts = {}) {
 }
 
 async function resolveBranch() {
+  // Kontrollerar alltid att nyckeln får skriva till repot, även när grenen är angiven.
   const cfg = repoConfig();
-  if (cfg.branch) return cfg.branch;
+  if (!token()) { const e = new Error("Inte inloggad."); e.status = 401; throw e; }
   const repo = await gh(`/repos/${cfg.owner}/${cfg.repo}`);
-  if (repo.permissions && !repo.permissions.push) { const e = new Error("Nyckeln får inte skriva till repot."); e.status = 403; throw e; }
-  return repo.default_branch;
+  if (!repo.permissions?.push) { const e = new Error("Nyckeln har inte skrivbehörighet till repot."); e.status = 403; throw e; }
+  return cfg.branch || repo.default_branch;
 }
 
 async function loadFromGitHub() {
@@ -1128,28 +1125,45 @@ async function loadFromGitHub() {
   return { data: JSON.parse(text), sha: file.sha, branch };
 }
 
-async function loadFromPages() {
-  const urls = ["../content.json", "content.json"];
-  for (const u of urls) {
-    try { const r = await fetch(u + "?t=" + Date.now(), { cache: "no-store" }); if (r.ok) return await r.json(); } catch {}
-  }
-  throw new Error("Hittade ingen content.json bredvid editorn.");
-}
-
 async function loadPublished() {
-  // Senaste commit som ändrade filen. Repot är publikt, så det fungerar även utan nyckel.
+  // Senaste commit som ändrade filen.
   const cfg = repoConfig();
   const q = `/repos/${cfg.owner}/${cfg.repo}/commits?path=${encodeURIComponent(cfg.path)}&per_page=1` + (cfg.branch ? `&sha=${encodeURIComponent(cfg.branch)}` : "");
   try {
     let list;
-    try { list = await gh(q); } catch (e) { if (token()) list = await gh(q, { anonymous: true }); else throw e; }
+    list = await gh(q);
     const c = list?.[0]; if (!c) return;
     state.published = { date: c.commit.committer?.date || c.commit.author?.date, by: c.author?.login || c.commit.author?.name || "" };
     updateStatus();
   } catch { /* då visas datumet från filen i stället */ }
 }
 
+function authErrorText(e) {
+  if (!e) return "";
+  if (e.status === 401) return "GitHub känner inte igen nyckeln, eller så har den gått ut.";
+  if (e.status === 403) return e.message || "Nyckeln har inte behörighet till repot.";
+  if (e.status === 404) return "Hittar inte repot. Kontrollera att nyckeln har åtkomst till just det repot.";
+  return "Kunde inte nå GitHub: " + (e.message || e);
+}
+
+function showLocked(err) {
+  // Ingen data visas utan en giltig nyckel.
+  state.data = null; state.original = null; state.sha = null; state.source = null; state.published = null;
+  document.body.classList.add("locked");
+  $("#nav").replaceChildren();
+  const network = err && ![401, 403, 404].includes(err.status);
+  $("#main").replaceChildren(el("div", { class: "gate" },
+    el("h1", { text: "Logga in för att fortsätta" }),
+    el("p", { text: "Innehållet visas bara för redaktörer. Logga in med din GitHub-nyckel för att se och redigera det." }),
+    err ? el("div", { class: "msg", text: authErrorText(err) }) : null,
+    el("div", { class: "row", style: "display:flex;gap:8px;justify-content:center;flex-wrap:wrap" },
+      el("button", { class: "btn primary", onclick: openLogin }, token() && !network ? "Logga in med en annan nyckel" : "Logga in"),
+      network && token() ? el("button", { class: "btn", onclick: () => load() }, "Försök igen") : null)));
+  updateStatus();
+}
+
 function setData(data, sha, source) {
+  document.body.classList.remove("locked");
   state.data = clone(data);
   state.original = cleanAll(clone(data));
   state.sha = sha; state.source = source; state.showErrors = false;
@@ -1157,28 +1171,13 @@ function setData(data, sha, source) {
 }
 
 async function load({ silent = false } = {}) {
+  if (!token()) { showLocked(); return; }
   $("#status").textContent = "Läser in…";
-  let loaded = null, err = null;
-  if (token()) {
-    try { const r = await loadFromGitHub(); loaded = { data: r.data, sha: r.sha, source: "github" }; }
-    catch (e) { err = e; }
-  }
-  if (!loaded) {
-    try { loaded = { data: await loadFromPages(), sha: null, source: "pages" }; }
-    catch (e) { err = err || e; }
-  }
-  if (!loaded) {
-    $("#main").replaceChildren(el("div", { class: "banner err" }, el("b", { text: "Kunde inte läsa in innehållet." }), String(err?.message || err),
-      el("div", { class: "row" }, el("button", { class: "btn small primary", onclick: openLogin }, "Logga in"),
-        el("button", { class: "btn small", onclick: () => $("#fileInput").click() }, "Öppna fil från datorn"))));
-    $("#status").textContent = "";
-    return;
-  }
-  setData(loaded.data, loaded.sha, loaded.source);
+  let r;
+  try { r = await loadFromGitHub(); }
+  catch (e) { showLocked(e); throw e; }
+  setData(r.data, r.sha, "github");
   loadPublished();
-  if (err && token()) {
-    toast(err.status === 401 ? "GitHub-nyckeln fungerar inte längre. Logga in igen." : "Kunde inte läsa från GitHub: " + err.message, 5000);
-  }
 
   // Osparade ändringar från förra gången?
   const draft = store.get("draft");
@@ -1260,14 +1259,14 @@ $("#loginDialog").addEventListener("close", async () => {
   try {
     await resolveBranch();
     const keepEdits = state.data && changedSections().length ? clone(state.data) : null;
-    await load({ silent: true });
+    await load();
     if (keepEdits) { state.data = keepEdits; changed(true); }
-    toast("Inloggad. Du kan nu publicera.");
+    toast("Inloggad");
   } catch (e) {
     store.set("token", prev);
+    if (prev) load().catch(() => {}); else showLocked();
     const m = $("#tokenMsg");
-    m.textContent = e.status === 401 ? "GitHub känner inte igen nyckeln." :
-      e.status === 404 ? "Hittar inte repot. Kontrollera att nyckeln har åtkomst till just det repot." : e.message;
+    m.textContent = authErrorText(e);
     m.parentElement.classList.add("has-err");
     d.returnValue = "";
     d.showModal();
@@ -1275,7 +1274,7 @@ $("#loginDialog").addEventListener("close", async () => {
 });
 
 $("#publishBtn").addEventListener("click", () => {
-  if (!token()) return openLogin();
+  if (!token() || !state.data) return openLogin();
   state.showErrors = true;
   refreshValidation();
   if (lastValidation.total) {
@@ -1307,10 +1306,11 @@ document.addEventListener("click", () => menu.classList.remove("open"));
 menu.addEventListener("click", async e => {
   const act = e.target.dataset.act; if (!act) return;
   menu.classList.remove("open");
-  if (act === "login") openLogin();
+  if (act === "login") return openLogin();
+  if (!state.data && act !== "logout") return;
   if (act === "reload") {
     if (changedSections().length && !confirm("Läsa in senaste versionen? Dina opublicerade ändringar finns kvar och kan återställas.")) return;
-    await load();
+    await load().catch(() => {});
   }
   if (act === "discard") {
     if (!changedSections().length) return toast("Inga ändringar att slänga.");
@@ -1323,17 +1323,16 @@ menu.addEventListener("click", async e => {
     const a = el("a", { href: URL.createObjectURL(blob), download: "content.json" }); document.body.append(a); a.click(); a.remove();
   }
   if (act === "upload") $("#fileInput").click();
-  if (act === "logout") { store.set("token", null); toast("Utloggad"); load({ silent: true }); }
+  if (act === "logout") { store.set("token", null); showLocked(); toast("Utloggad"); }
 });
 
 $("#fileInput").addEventListener("change", async () => {
   const f = $("#fileInput").files[0]; if (!f) return;
   try {
     const data = JSON.parse(await f.text());
-    if (state.data && state.source === "github") {
-      // Behåll GitHub-versionen som jämförelse så att filen kan publiceras.
-      state.data = data; changed(true);
-    } else setData(data, null, "file");
+    if (!state.data) return;
+    // Behåll GitHub-versionen som jämförelse så att filen kan publiceras.
+    state.data = data; changed(true);
     toast("Filen är inläst");
   } catch (e) { alert("Filen kunde inte läsas som JSON: " + e.message); }
   $("#fileInput").value = "";
@@ -1342,7 +1341,7 @@ $("#fileInput").addEventListener("change", async () => {
 // Menyn ska ligga precis under headern, som kan bli två rader på mobil.
 new ResizeObserver(([e]) => document.documentElement.style.setProperty("--header-h", e.target.offsetHeight + "px")).observe($("header.top"));
 
-load();
+load().catch(() => {});
 </script>
 </body>
 </html>
