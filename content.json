@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-02",
   "contact": {
     "website": "https://www.fritidscenter.se"
   },
@@ -302,6 +302,12 @@
       "location": "Trollhättan",
       "text": "Byt mot riktigt event.",
       "id": "ex-event"
+    },
+    {
+      "title": "Jul !",
+      "date": "2026-12-24",
+      "text": "Nu är det jul",
+      "id": "jul"
     }
   ],
   "club": {
